@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { site } from '../content/site';
+import { site, principalProjects } from '../content/site';
 
 interface Props {
   title?: string;
@@ -44,8 +44,18 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
         <a class="site-name" href="/">{site.name.toUpperCase()}</a>
         <nav class="site-nav" aria-label="Main">
           <ul>
-            <li><a href="/#work">Work</a></li>
-            <li><a class="nav-samples" href="/samples" aria-current={path === '/samples' ? 'page' : undefined}>Work Samples</a></li>
+            <li class="nav-menu">
+              <a class="nav-samples" href="/samples" aria-current={path === '/samples' ? 'page' : undefined}>Work Samples</a>
+              <ul class="nav-sub" aria-label="Works">
+                {principalProjects.map((p) => (
+                  <li>
+                    <a href={`/work/${p.slug}`} aria-current={path === `/work/${p.slug}` ? 'page' : undefined}>
+                      {p.title} <span class="nav-sub-year">{p.year}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
             <li><a href="/#about">About</a></li>
           </ul>
         </nav>
