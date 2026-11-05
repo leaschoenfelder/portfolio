@@ -215,12 +215,14 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
   /* Opening pictures: stacked, flush right, no overlap */
   .opening-art {
     grid-column: 8 / 13;
-    display: flex; flex-direction: column; align-items: flex-end; gap: 1.75rem;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 0.9rem;
   }
-  .art-pw { display: block; width: 100%; }
-  .art-fl { display: block; width: 46%; }
+  .art-pw { display: block; width: 100%; position: relative; }
+  .art-fl { display: block; width: 58%; }
   .opening-art a { text-decoration: none; }
-  .opening-art :global(figcaption) { text-align: right; }
+  /* Perfect Woman caption sits left, beside the Try Again picture, so the two can sit close */
+  .art-pw :global(figcaption) { position: absolute; top: 100%; left: 0; max-width: calc(42% - 1rem); }
+  .art-fl :global(figcaption) { text-align: right; }
 
   @media (max-width: 900px) {
     .opening { min-height: 0; }
