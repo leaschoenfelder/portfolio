@@ -145,6 +145,20 @@ a:hover { text-decoration-color: var(--accent); }
 .media-frame > img, .media-frame > video, .media-frame > iframe {
   width: 100%; height: 100%; object-fit: contain; border: 0;
 }
+/* Very tall images: fixed-height frame that scrolls, nothing cropped */
+.media-scroll .media-frame {
+  aspect-ratio: auto; height: min(70vh, 640px);
+  overflow-y: auto; overscroll-behavior: contain;
+  border: 1px solid var(--line);
+}
+.media-scroll .media-frame > img { height: auto; object-fit: initial; }
+
+/* Galleries: images flow in columns at their own proportions */
+.gallery { columns: 2; column-gap: var(--gutter); }
+.gallery.cols-3 { columns: 3; }
+.gallery > .media { break-inside: avoid; margin-bottom: var(--gutter); }
+@media (max-width: 760px) { .gallery, .gallery.cols-3 { columns: 1; } }
+
 .media figcaption {
   font-size: var(--fs-small); color: var(--muted);
   margin-top: 0.7rem; line-height: 1.45;

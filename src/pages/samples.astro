@@ -2,10 +2,19 @@
 import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
 import Review from '../components/Review.astro';
-import { samples, getProject, totalDuration, site } from '../content/site';
+import { samples, getProject, site, fmt, sampleSecs, totalSecs } from '../content/site';
 
-const items = samples.items.map((s, i) => ({ ...s, n: String(i + 1).padStart(2, '0'), project: getProject(s.slug) }));
-const total = totalDuration(samples.items);
+const items = samples.items.map((s, i) => ({
+  ...s,
+  n: String(i + 1).padStart(2, '0'),
+  project: getProject(s.slug),
+  length: fmt(sampleSecs(s)),
+}));
+const total = fmt(totalSecs(samples.items));
+const isPortrait = (aspect: string) => {
+  const [w, h] = aspect.split('/').map((n) => parseFloat(n));
+  return w / h < 1;
+};
 ---
 <Base title="Selected Work Samples" description={samples.sub}>
   <header class="wrap s-head">
@@ -20,37 +29,43 @@ const total = totalDuration(samples.items);
             <span class="idx-n">{s.n}</span>
             <span class="idx-title">{s.project.title}</span>
             <span class="idx-year">{s.project.year}</span>
-            <span class="idx-dur">{s.duration}</span>
+            <span class="idx-dur">{s.length}</span>
           </a>
         </li>
       ))}
       <li class="idx-total">
-        <span>Total viewing time</span><span>approx. {total}</span>
+        <span>Total viewing time</span><span>{total} min</span>
       </li>
     </ol>
     <Review id="samples" />
   </header>
 
   {items.map((s) => (
-    <section
-      id={`sample-${s.slug}`}
-      class:list={['wrap', 'sample', s.video.aspect.replace(/\s/g, '') === '9/16' && 'portrait']}
-      aria-labelledby={`t-${s.slug}`}
-    >
+    <section id={`sample-${s.slug}`} class="wrap sample" aria-labelledby={`t-${s.slug}`}>
       <div class="sample-info">
-        <p class="meta"><span>{s.n}</span><span>{s.duration} min</span></p>
+        <p class="meta"><span>{s.n}</span><span>{s.length} min</span></p>
         <h2 id={`t-${s.slug}`}>{s.project.title} <span class="s-year">{s.project.year}</span></h2>
         <p>{s.framing}</p>
         <p class="credit">{s.role}</p>
         <a class="link-arrow" href={`/work/${s.slug}`}>Full project page</a>
-        {s.slug === 'failing' && (
+        {s.slug === 'try-again' && (
           <p class="optional">
             Optional, outside the timed selection:<br />
-            <a class="link-arrow" href={site.failingPrototype} target="_blank" rel="noopener">Play the Prototype</a>
+            <a class="link-arrow" href={site.tryAgainPrototype} target="_blank" rel="noopener">Play the Prototype</a>
           </p>
         )}
       </div>
-      <div class="sample-video"><Media media={s.video} /></div>
+      <div class="sample-clips">
+        {s.clips.map((c, i) => (
+          <div class:list={['clip', isPortrait(c.aspect) && 'portrait']}>
+            <p class="clip-label">
+              {s.clips.length > 1 && <span>{String.fromCharCode(97 + i)}.</span>}
+              {c.caption?.replace(/\.$/, '')} <span class="clip-dur">{c.duration}</span>
+            </p>
+            <Media media={{ ...c, caption: undefined }} />
+          </div>
+        ))}
+      </div>
     </section>
   ))}
 </Base>
@@ -80,17 +95,23 @@ const total = totalDuration(samples.items);
     padding-block: clamp(3rem, 7vw, 5.5rem);
     border-top: 1px solid var(--line);
   }
+  .sample-info { position: sticky; top: 5.5rem; }
   .sample h2 { font-size: var(--fs-h3); margin: 0.8rem 0 1.25rem; }
   .s-year { font-family: var(--sans); font-size: var(--fs-small); color: var(--muted); }
   .sample .credit { margin-bottom: 1.5rem; }
-  .sample.portrait .sample-video { max-width: 400px; }
   .optional { margin-top: 2rem; font-size: 0.875rem; color: var(--muted); }
   .optional .link-arrow { color: var(--fg); margin-top: 0.4rem; }
 
+  .sample-clips { display: grid; gap: clamp(2rem, 4vw, 3rem); }
+  .clip.portrait { max-width: 400px; }
+  .clip-label { font-size: 0.875rem; margin-bottom: 0.6rem; display: flex; gap: 0.5em; align-items: baseline; }
+  .clip-label > span:first-child { color: var(--muted); }
+  .clip-dur { color: var(--muted); font-variant-numeric: tabular-nums; margin-left: auto; }
+
   @media (max-width: 760px) {
     .sample { grid-template-columns: 1fr; }
-    .sample-video { order: -1; }
-    .sample.portrait .sample-video { max-width: 100%; }
+    .sample-info { position: static; }
+    .clip.portrait { max-width: 100%; }
     .index a { grid-template-columns: 2rem 1fr auto 3rem; }
   }
 </style>

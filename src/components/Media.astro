@@ -1,10 +1,10 @@
 ---
 /**
- * Renders one media slot from src/content/site.ts.
- * With no `src` set, it shows a clearly labelled placeholder
- * that names the intended content and the suggested file path.
+ * Renders one media entry from src/content/site.ts.
+ * An entry without `src` shows as a labelled placeholder in the local preview
+ * and renders nothing on the published site.
  */
-import type { Media } from '../content/site';
+import { visible, type Media } from '../content/site';
 
 interface Props {
   media: Media;
@@ -13,60 +13,48 @@ interface Props {
   class?: string;
 }
 const { media, eager = false, caption = true, class: cls } = Astro.props;
+const show = visible(media);
 const isPlaceholder = !media.src;
 const hasCaption = caption && (media.caption || media.credit);
 ---
-<figure class:list={['media', cls]} style={`--ar: ${media.aspect}`}>
-  <div class="media-frame">
-    {isPlaceholder ? (
-      <div class="ph" role="img" aria-label={`Placeholder: ${media.intended}`}>
-        <span class="ph-tag">Placeholder · {media.kind}</span>
-        <span class="ph-text">{media.intended}</span>
-        <code class="ph-path">{media.suggestedPath}</code>
-      </div>
-    ) : media.kind === 'image' ? (
-      <img
-        src={media.src}
-        alt={media.alt}
-        loading={eager ? 'eager' : 'lazy'}
-        decoding="async"
-        fetchpriority={eager ? 'high' : undefined}
-      />
-    ) : media.kind === 'video' && media.loop ? (
-      <video
-        src={media.src}
-        poster={media.poster}
-        autoplay
-        muted
-        loop
-        playsinline
-        data-loop
-        aria-label={media.alt}
-      />
-    ) : media.kind === 'video' ? (
-      <video controls preload="none" playsinline poster={media.poster} aria-label={media.alt}>
-        <source src={media.src} />
-        {media.captionsSrc && <track kind="captions" src={media.captionsSrc} srclang="en" label="English" default />}
-      </video>
-    ) : (
-      <iframe
-        src={media.src}
-        title={media.alt}
-        loading="lazy"
-        allow="fullscreen; picture-in-picture; encrypted-media"
-        allowfullscreen
-      />
+{show && (
+  <figure class:list={['media', media.scroll && 'media-scroll', cls]} style={`--ar: ${media.aspect}`}>
+    <div class="media-frame" tabindex={media.scroll ? 0 : undefined} role={media.scroll ? 'region' : undefined} aria-label={media.scroll ? media.alt : undefined}>
+      {isPlaceholder ? (
+        <div class="ph" role="img" aria-label={`Placeholder: ${media.intended}`}>
+          <span class="ph-tag">Placeholder · {media.kind}</span>
+          <span class="ph-text">{media.intended}</span>
+          <code class="ph-path">{media.suggestedPath}</code>
+        </div>
+      ) : media.kind === 'image' ? (
+        <img
+          src={media.src}
+          alt={media.alt}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          fetchpriority={eager ? 'high' : undefined}
+        />
+      ) : media.kind === 'video' && media.loop ? (
+        <video src={media.src} poster={media.poster} autoplay muted loop playsinline data-loop aria-label={media.alt} />
+      ) : media.kind === 'video' ? (
+        <video controls preload="none" playsinline poster={media.poster} aria-label={media.alt}>
+          <source src={media.src} type="video/mp4" />
+          {media.captionsSrc && <track kind="captions" src={media.captionsSrc} srclang="en" label="English" default />}
+        </video>
+      ) : (
+        <iframe src={media.src} title={media.alt} loading="lazy" allow="fullscreen; picture-in-picture; encrypted-media" allowfullscreen />
+      )}
+    </div>
+    {hasCaption && (
+      <figcaption>
+        {media.caption}
+        {media.credit && <span class="fig-credit">{media.credit}</span>}
+      </figcaption>
     )}
-  </div>
-  {hasCaption && (
-    <figcaption>
-      {media.caption}
-      {media.credit && <span class="fig-credit">{media.credit}</span>}
-    </figcaption>
-  )}
-  {media.fallbackUrl && !isPlaceholder && (
-    <p class="media-fallback">
-      <a href={media.fallbackUrl} target="_blank" rel="noopener">Video not playing? Open it directly</a>
-    </p>
-  )}
-</figure>
+    {media.fallbackUrl && !isPlaceholder && (
+      <p class="media-fallback">
+        <a href={media.fallbackUrl} target="_blank" rel="noopener">Video not playing? Open it directly</a>
+      </p>
+    )}
+  </figure>
+)}

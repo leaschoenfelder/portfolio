@@ -3,13 +3,13 @@
    --------------------------------------------------------------------------
    All texts, credits and media references for the whole site live here.
 
-   To replace a placeholder with real media:
-     1. Put the file into /public/media/<project>/ (e.g. hero.jpg)
-     2. Set `src: '/media/<project>/hero.jpg'` on the matching slot below
-     3. Check `aspect` matches the real file (e.g. '16 / 9', '9 / 16', '4 / 3')
-     4. Write a meaningful `alt`, and `caption` / `credit` where needed
+   Media files live in /public/media/<project>/ and are referenced by path.
+   Each media entry keeps its alt text, caption and credit together.
+   `aspect` must match the real file — media is never cropped.
 
-   Slots without `src` render as labelled placeholders.
+   An entry without `src` is a placeholder: it shows as a labelled box in the
+   local preview and is left out of the published site.
+
    "To confirm" notes live in review.local.ts (kept off GitHub) and
    show only in the local preview, never on the published site.
    ========================================================================== */
@@ -18,7 +18,7 @@ export type MediaKind = 'image' | 'video' | 'embed';
 
 export interface Media {
   kind: MediaKind;
-  /** Public path ('/media/…') or, for kind 'embed', a player URL (YouTube/Vimeo). Empty = placeholder. */
+  /** Public path ('/media/…') or, for kind 'embed', a player URL. Empty = placeholder. */
   src?: string;
   /** Poster image for videos */
   poster?: string;
@@ -28,27 +28,36 @@ export interface Media {
   fallbackUrl?: string;
   /** Muted silent loop (homepage previews only) */
   loop?: boolean;
+  /** Very tall images (e.g. storyboards): shown in a scrollable frame instead of shrinking */
+  scroll?: boolean;
   /** CSS aspect ratio of the real asset — never crop to fit */
   aspect: string;
   alt: string;
   caption?: string;
   credit?: string;
-  /** What should go here — shown on the placeholder */
-  intended: string;
-  /** Where the file is expected — shown on the placeholder */
-  suggestedPath: string;
+  /** Video length in m:ss (used on the samples page) */
+  duration?: string;
+  /** What should go here — shown on placeholders only */
+  intended?: string;
+  suggestedPath?: string;
 }
 
-/** Helper to define a media slot with a suggested file path. */
-function slot(
-  project: string,
-  name: string,
-  m: Omit<Media, 'suggestedPath' | 'alt'> & { alt?: string; ext?: string },
-): Media {
-  const ext = m.ext ?? (m.kind === 'image' ? 'jpg' : 'mp4');
-  const { ext: _ignored, ...rest } = m;
-  return { alt: m.intended, ...rest, suggestedPath: `/media/${project}/${name}.${ext}` };
+const M = '/media';
+
+function img(path: string, w: number, h: number, alt: string, caption?: string, credit?: string, extra: Partial<Media> = {}): Media {
+  return { kind: 'image', src: `${M}/${path}`, aspect: `${w} / ${h}`, alt, caption, credit, ...extra };
 }
+function vid(path: string, w: number, h: number, duration: string, alt: string, caption?: string, credit?: string): Media {
+  const base = path.replace(/\.mp4$/, '');
+  return { kind: 'video', src: `${M}/${path}`, poster: `${M}/${base}-poster.jpg`, aspect: `${w} / ${h}`, duration, alt, caption, credit };
+}
+/** An empty slot: placeholder in the local preview, hidden on the published site. */
+function placeholder(project: string, name: string, kind: MediaKind, aspect: string, intended: string): Media {
+  return { kind, aspect, alt: intended, intended, suggestedPath: `${M}/${project}/${name}.${kind === 'image' ? 'jpg' : 'mp4'}` };
+}
+
+/** True when a media entry should be rendered (real file, or placeholder while developing). */
+export const visible = (m?: Media) => !!m && (!!m.src || import.meta.env.DEV);
 
 /* --------------------------------------------------------------------------
    Site
@@ -60,9 +69,136 @@ export const site = {
   year: 2026,
   description:
     'Lea Schönfelder is an artist and game designer. Her work explores what interaction can express, whose experiences games can represent, and who feels invited to play.',
-  /** Social sharing image, 1200×630, e.g. '/media/og.jpg'. Leave empty until available. */
-  ogImage: '',
-  failingPrototype: 'https://leaschoenfelder.github.io/failing-play/',
+  /** Social sharing image, 1200×630 recommended. */
+  ogImage: '/media/perfect-woman/roles.jpg',
+  tryAgainPrototype: 'https://leaschoenfelder.github.io/failing-play/',
+};
+
+/* --------------------------------------------------------------------------
+   Credits (from the media manifest)
+   -------------------------------------------------------------------------- */
+const C = {
+  pw: 'Concept, Art and Game Design: Lea Schönfelder · Programming and Game Design: Peter Lu',
+  awc: '© ustwo games',
+  fh: '© Fein Games',
+  ta: '© Lea Schönfelder',
+};
+
+/* --------------------------------------------------------------------------
+   Media library
+   -------------------------------------------------------------------------- */
+const pw = {
+  heroPhoto: img('perfect-woman/hero-photo.jpg', 2000, 1334,
+    'Full-body documentation of a player using Kinect poses to control Perfect Woman.',
+    'Perfect Woman is played with the whole body.'),
+  roles: img('perfect-woman/roles.jpg', 2000, 1125,
+    'A colourful ensemble of exaggerated female life roles from the game.',
+    'Some of the lives players can choose.'),
+  exhibition: img('perfect-woman/exhibition-digifest.jpg', 1200, 1800,
+    'Live exhibition documentation showing embodied play in a public setting.',
+    'Perfect Woman at Digifest, 2015.', 'Photo: Paula Lafleur'),
+  academic: img('perfect-woman/scene-academic.jpg', 1600, 900,
+    'An academic or professional life-role scene from the game’s branching biography.'),
+  underworld: img('perfect-woman/scene-underworld.jpg', 1600, 900,
+    'A surreal underworld scene showing the game’s dark humour.'),
+  performance: img('perfect-woman/screen-performance.jpg', 1440, 810,
+    'The “Call Girl (60)” performance stage, with pose interface and a theatrical heart-and-star backdrop.',
+    'Each life is a pose to be held.'),
+  choice: img('perfect-woman/screen-choice.jpg', 1440, 810,
+    'The life-path choice screen at age 85, offering several identities with different difficulty levels.',
+    'Choosing the next stage of life, at age 85.'),
+  grandmother: img('perfect-woman/screen-grandmother.jpg', 1440, 810,
+    'The “Wise and Experienced Grandmother (85)” outcome beside a fireplace.'),
+  concept: img('perfect-woman/concept.jpg', 612, 842,
+    'A hand-drawn early concept connecting a professor-at-MIT persona to four possible outcomes in old age.',
+    'Early concept sketch of the branching life paths.', 'Drawing: Lea Schönfelder'),
+  storyboard: img('perfect-woman/storyboard.jpg', 1440, 6000,
+    'A long storyboard mapping onboarding, Kinect calibration, choices, scenes, cutscenes, deaths and endings.',
+    'Storyboard of the whole game, from calibration to endings. Scroll to see all of it.', undefined, { scroll: true }),
+  teaser: vid('perfect-woman/teaser.mp4', 1280, 720, '0:31',
+    'Teaser combining a performer’s body poses with the game’s life-role scenes.',
+    'Teaser.', 'Video: Steven Amrhein'),
+  gameplay: vid('perfect-woman/gameplay.mp4', 1280, 720, '3:17',
+    'Unedited gameplay showing the sequence from body pose to choice and consequence.',
+    'Gameplay recording, from body pose to choice and consequence.'),
+};
+
+const awc = {
+  hero: img('assemble-with-care/hero.jpg', 2000, 1250,
+    'A repair workspace with a red portable radio, a screwdriver, a small device, batteries and a cup on a leafy green background.',
+    'Every object arrives with a story.', C.awc),
+  storyboard: img('assemble-with-care/storyboard.jpg', 1199, 1600,
+    'Storyboard frame: a seated woman at a table, with first-person hands holding a repair object in the foreground.',
+    'Storyboard.', C.awc),
+  selma: img('assemble-with-care/card-selma.png', 1400, 1049,
+    'Character card for “Sensible Selma”, holding a tape recorder she no longer needs.', 'Sensible Selma.', C.awc),
+  ada: img('assemble-with-care/card-ada.png', 1400, 1049,
+    'Character card for “Ambitious Ada”, an activist holding “Fix the City” and “Vote Ada” signs.', 'Ambitious Ada.', C.awc),
+  carl: img('assemble-with-care/card-carl.png', 1400, 1049,
+    'Character card for “Caring Carl”, holding a green telephone linked to memories of his mother.', 'Caring Carl.', C.awc),
+  trailer: vid('assemble-with-care/trailer.mp4', 1280, 720, '1:10',
+    'Trailer introducing the repair shop, the characters and the emotional tone of the game.',
+    'Trailer.', C.awc),
+  camera: vid('assemble-with-care/repair-camera.mp4', 1280, 720, '1:39',
+    'Close, tactile gameplay sequence of taking apart and reassembling a reflex camera.',
+    'One complete repair: a reflex camera, taken apart and put back together.', C.awc),
+};
+
+const fh = {
+  hero: img('finding-hannah/hero.jpg', 2048, 1536,
+    'A dense, hand-painted Berlin transit scene filled with commuters and small narrative details.',
+    'A Berlin transit scene, one of the game’s search spaces.', C.fh),
+  intro: img('finding-hannah/hannah-intro.jpg', 1800, 1349,
+    'Close-up of Hannah against a neon-lit Berlin background, introducing herself to the player.',
+    '“My name is Hannah. I live in Berlin.”', C.fh),
+  courtyard: img('finding-hannah/scene-courtyard.jpg', 1800, 1349,
+    'An illustrated garden or courtyard scene populated with characters and searchable details.', undefined, C.fh),
+  bookshop: img('finding-hannah/scene-bookshop.jpg', 1800, 1350,
+    'A richly detailed bookshop interior showing the game’s hidden-object storytelling.',
+    'Every object in a scene can carry part of the story.', C.fh),
+  desk: img('finding-hannah/scene-desk.jpg', 2200, 1017,
+    'A contemporary desk and workplace scene composed as an explorable illustrated tableau.', undefined, C.fh),
+  cafe: img('finding-hannah/scene-cafe.jpg', 2200, 1017,
+    'A busy café scene that places everyday social life at the centre of play.', undefined, C.fh),
+  club: img('finding-hannah/scene-club.jpg', 2200, 1017,
+    'A crowded Berlin club scene rendered as a colourful search space.', undefined, C.fh),
+  wartime: img('finding-hannah/scene-wartime.jpg', 2200, 1017,
+    'A wartime-era scene connecting the present-day story to an earlier generation.', undefined, C.fh),
+  books: img('finding-hannah/scene-books.jpg', 2200, 1018,
+    'A book-filled interior showing how environmental detail carries story and interaction.', undefined, C.fh),
+  eva: img('finding-hannah/concept-eva.png', 740, 1200, 'Character concept artwork for Eva.', 'Eva.', C.fh),
+  hannah: img('finding-hannah/concept-hannah.png', 741, 1200, 'Character concept artwork for Hannah, the contemporary protagonist.', 'Hannah.', C.fh),
+  sigrid: img('finding-hannah/concept-sigrid.png', 742, 1200, 'Character concept artwork for Sigrid, from an older generation of the family.', 'Sigrid.', C.fh),
+  knitting: img('finding-hannah/knitting-concept.jpg', 1199, 1600,
+    'An early open-layout concept for Sigrid’s knitting interaction.', 'Early concept for Sigrid’s knitting interaction.', C.fh),
+  trailer: vid('finding-hannah/trailer.mp4', 1280, 720, '0:49',
+    'Trailer moving across the three women’s lives and different historical periods.',
+    'Trailer.', C.fh),
+  prototype: vid('finding-hannah/prototype-teaser.mp4', 886, 1920, '0:49',
+    'An early monochrome portrait-format prototype with story fragments and line-based puzzles.',
+    'Early prototype, before the final visual language.', C.fh),
+};
+
+const ta = {
+  garden: img('try-again/garden-finale.jpg', 1400, 1400,
+    'Wildflowers growing through a line-grid garden, with the phrase “This isn’t a fail.”',
+    'The end of story 6: wildflowers grow through the grid.', C.ta),
+  calendar: img('try-again/calendar.jpg', 1400, 1400,
+    'A fully coloured, overcrowded weekly calendar showing the actual outcome of a planned routine.',
+    'A planned week, and what it actually became.', C.ta),
+  s1: [
+    img('try-again/story1-1.jpg', 1200, 1200, 'Title card reading “Fail #1”.'),
+    img('try-again/story1-2.jpg', 1200, 1200, 'An illustrated family scene with an angry couple and their sad daughter.'),
+    img('try-again/story1-3.jpg', 1200, 1200, 'Text panel: “I screamed at my husband. It made my daughter sad.”'),
+  ],
+  s6: [
+    img('try-again/story6-1.jpg', 1200, 1200, 'Text panel: “I’m late with gardening this year.”'),
+    img('try-again/story6-2.jpg', 1200, 1200, 'Text panel: “After weeks, wild flowers grow by themselves.”'),
+    img('try-again/story6-3.jpg', 1200, 1200, 'Text panel: “This isn’t a fail.”'),
+  ],
+  gameplay: vid('try-again/gameplay.mp4', 1126, 2436, '0:29',
+    'Portrait gameplay: start screen, a planned routine, a drawn line, the overcrowded calendar and a second solution.',
+    'Gameplay recording on a phone.', C.ta),
 };
 
 /* --------------------------------------------------------------------------
@@ -79,18 +215,8 @@ export const home = {
   exploreLabel: 'Explore the work',
 
   openingMedia: {
-    perfectWoman: slot('perfect-woman', 'opening', {
-      kind: 'image',
-      aspect: '4 / 3',
-      intended: 'Perfect Woman — person physically playing, or exhibition view',
-      caption: 'Perfect Woman, 2014',
-    }),
-    failing: slot('failing', 'opening', {
-      kind: 'image',
-      aspect: '3 / 4',
-      intended: 'Failing — original illustrated story panel',
-      caption: 'Failing, ongoing',
-    }),
+    perfectWoman: { ...pw.heroPhoto, caption: 'Perfect Woman, 2014', credit: undefined },
+    tryAgain: { ...ta.garden, caption: 'Try Again, ongoing', credit: undefined },
   },
 
   inquiry: [
@@ -108,7 +234,7 @@ export const home = {
 
   bio: [
     'Lea Schönfelder is a German artist and game designer whose work explores games as a medium for personal, emotional and social expression. Her practice spans independent experimental games, internationally recognised interactive works and interdisciplinary creative collaborations.',
-    'Her projects include Perfect Woman, Monument Valley 2, Assemble with Care and Finding Hannah. She co-founded the independent studio Fein Games and continues to explore new approaches to interactive storytelling through her ongoing work Failing.',
+    'Her projects include Perfect Woman, Monument Valley 2, Assemble with Care and Finding Hannah. She co-founded the independent studio Fein Games and continues to explore new approaches to interactive storytelling through her ongoing work Try Again.',
   ],
   recognition: [
     { award: 'BAFTA Breakthrough UK', year: '2020', note: 'Personal recognition' },
@@ -124,6 +250,7 @@ export const home = {
    -------------------------------------------------------------------------- */
 export interface ContextItem { label: string; detail?: string; href?: string }
 export interface LinkItem { label: string; href: string; external?: boolean }
+export interface Gallery { title: string; items: Media[] }
 
 export interface Project {
   slug: string;
@@ -147,13 +274,14 @@ export interface Project {
 
   work: string[];
   interaction: { title: string; text: string[]; media: Media[] };
+  galleries?: Gallery[];
   contribution: string[];
   fullCredits?: string[];
   process: Media[];
   context: ContextItem[];
   links: LinkItem[];
 
-  /** Colours sampled from the artwork, used for this project's sections only */
+  /** Colours used for this project's sections only */
   theme?: { bg: string; fg: string; muted: string; line: string };
 
   next: string;
@@ -167,28 +295,18 @@ export const projects: Project[] = [
     number: '01',
     title: 'Perfect Woman',
     year: '2014',
-    medium: 'Movement-based game, Kinect',
-    role: 'Game Director, Game Designer, Artist',
-    collaborators: 'Co-created with Peter Lu',
-    creditShort: 'Co-created with Peter Lu',
+    medium: 'Movement-based game for Kinect',
+    role: 'Concept, Art and Game Design',
+    collaborators: 'Peter Lu (Programming and Game Design)',
+    creditShort: C.pw,
     question: 'What does it take to perform a perfect life?',
     home: {
       headline: 'When social expectations become physical performance.',
       caption:
         'A movement-based game that turns the pressure to live a perfect life into a physical challenge.',
-      media: [
-        slot('perfect-woman', 'home', {
-          kind: 'image',
-          aspect: '16 / 9',
-          intended: 'Large exhibition photo or footage still: a person physically interacting with the game',
-        }),
-      ],
+      media: [pw.roles, pw.exhibition],
     },
-    hero: slot('perfect-woman', 'hero', {
-      kind: 'image',
-      aspect: '16 / 9',
-      intended: 'Hero: photograph or video of a person playing with Kinect',
-    }),
+    hero: pw.heroPhoto,
     heroLayout: 'wide',
     work: [
       'Perfect Woman is a game played with the whole body. Players move through the stages of a woman’s life and, at each stage, choose who they want to become. Every choice is tied to a pose that has to be held in front of a Kinect camera.',
@@ -200,32 +318,25 @@ export const projects: Project[] = [
         'The central decision was to make social pressure physical. Instead of pressing a button to choose a path, players commit to it with their posture. The more a choice promises, the harder the pose becomes to hold.',
         'Watching someone play is part of the work. The audience sees the effort, the hesitation and the moment the body gives in.',
       ],
-      media: [
-        slot('perfect-woman', 'gameplay', {
-          kind: 'video',
-          aspect: '16 / 9',
-          intended: 'Gameplay footage showing body movement and the on-screen response',
-        }),
-        slot('perfect-woman', 'choices', {
-          kind: 'image',
-          aspect: '16 / 9',
-          intended: 'Screen illustrating different life choices',
-        }),
-      ],
+      media: [pw.gameplay, pw.choice, pw.performance],
     },
+    galleries: [
+      { title: 'From the game', items: [pw.teaser, pw.roles, pw.academic, pw.underworld, pw.grandmother] },
+    ],
     contribution: [
-      'I co-created Perfect Woman with Peter Lu. I worked on the project as game director, game designer and artist.',
+      'I conceived Perfect Woman and was responsible for its concept, art and game design. Peter Lu programmed the game and shaped its game design with me.',
     ],
-    process: [
-      slot('perfect-woman', 'process', {
-        kind: 'image',
-        aspect: '4 / 3',
-        intended: 'Optional: development sketch or exhibition documentation',
-      }),
+    fullCredits: [
+      'Concept, Art and Game Design: Lea Schönfelder',
+      'Programming and Game Design: Peter Lu',
+      'Additional Art: Marius Winter',
+      'Producers: Benedikt Haas and Annika Bauer',
+      'Website and Video: Steven Amrhein',
     ],
+    process: [pw.concept, pw.exhibition, pw.storyboard],
     context: [
       { label: 'A MAZE. Most Amazing Game Award', detail: '2014' },
-      { label: 'Exhibited internationally, including at ZKM', detail: 'Selected exhibition history to follow' },
+      { label: 'Exhibited internationally, including Digifest 2015' },
     ],
     links: [],
     next: 'assemble-with-care',
@@ -238,28 +349,18 @@ export const projects: Project[] = [
     number: '02',
     title: 'Assemble with Care',
     year: '2019',
-    medium: 'Narrative puzzle game, mobile and desktop',
-    role: 'Game Director & Lead Game Designer',
+    medium: 'Narrative puzzle game',
+    role: 'Lead Game Designer; led the design and development team',
     collaborators: 'ustwo games',
-    creditShort: 'Game Director & Lead Game Designer, ustwo games',
+    creditShort: 'Lead Game Designer, ustwo games',
     question: 'Can the act of repairing something become a way to explore emotional relationships?',
     home: {
       headline: 'Repairing objects. Reconnecting people.',
       caption:
         'An exploration of how tactile interactions can become metaphors for care, memory and emotional repair.',
-      media: [
-        slot('assemble-with-care', 'home', {
-          kind: 'image',
-          aspect: '4 / 3',
-          intended: 'An actual repair interaction (not title artwork)',
-        }),
-      ],
+      media: [awc.hero],
     },
-    hero: slot('assemble-with-care', 'hero', {
-      kind: 'image',
-      aspect: '16 / 9',
-      intended: 'Hero: image showing a repair interaction',
-    }),
+    hero: awc.hero,
     heroLayout: 'wide',
     work: [
       'In Assemble with Care, players restore cherished objects that belong to the people of a small town. Each object carries a story.',
@@ -271,34 +372,14 @@ export const projects: Project[] = [
         'Every repair follows the same rhythm: take the object apart, find what is broken, mend it and reassemble it. The interactions are tactile and paced so that each part is handled rather than skipped.',
         'This physical attention mirrors the emotional work in the story: understanding how something fits together before trying to fix it.',
       ],
-      media: [
-        slot('assemble-with-care', 'repair-sequence', {
-          kind: 'video',
-          aspect: '16 / 9',
-          intended: 'Gameplay footage of one complete repair sequence',
-        }),
-        slot('assemble-with-care', 'detail-1', {
-          kind: 'image',
-          aspect: '4 / 3',
-          intended: 'Detail shot demonstrating tactility and interaction design',
-        }),
-        slot('assemble-with-care', 'detail-2', {
-          kind: 'image',
-          aspect: '4 / 3',
-          intended: 'Second detail shot',
-        }),
-      ],
+      media: [awc.camera],
     },
+    galleries: [{ title: 'Trailer', items: [awc.trailer] }],
     contribution: [
-      'I was game director and lead game designer of Assemble with Care, which was developed collaboratively by the team at ustwo games.',
+      'As lead game designer, I led the design and development team of Assemble with Care. The game is a ustwo games production, made by the whole studio team.',
     ],
-    process: [
-      slot('assemble-with-care', 'process', {
-        kind: 'image',
-        aspect: '4 / 3',
-        intended: 'Development sketches or prototypes (if approved for use)',
-      }),
-    ],
+    fullCredits: ['A ustwo games production', 'Lead Game Designer: Lea Schönfelder', '© ustwo games'],
+    process: [awc.storyboard, awc.selma, awc.ada, awc.carl],
     context: [
       { label: 'Apple Arcade launch title', detail: '2019' },
       { label: 'BAFTA Games Award nomination', detail: 'For the game' },
@@ -315,27 +396,17 @@ export const projects: Project[] = [
     title: 'Finding Hannah',
     year: '2023',
     medium: 'Narrative hidden-object game',
-    role: 'Co-founder, Game Director & Game Designer',
+    role: 'Co-founder & Co-CEO, Creative Direction',
     collaborators: 'Fein Games',
-    creditShort: 'Game Director & Game Designer, Fein Games',
+    creditShort: 'Creative Direction, Fein Games',
     question: 'How can familiar game conventions open up space for unfamiliar perspectives?',
     home: {
       headline: 'Making room for stories rarely told in games.',
       caption:
         'Three generations of women, their search for self-determination, and familiar forms of play that invite new audiences into their stories.',
-      media: [
-        slot('finding-hannah', 'home', {
-          kind: 'image',
-          aspect: '16 / 9',
-          intended: 'Colourful, recognisable hidden-object scene (full width)',
-        }),
-      ],
+      media: [fh.hero],
     },
-    hero: slot('finding-hannah', 'hero', {
-      kind: 'image',
-      aspect: '16 / 9',
-      intended: 'Hero: rich, recognisable hidden-object scene',
-    }),
+    hero: fh.hero,
     heroLayout: 'wide',
     work: [
       'Finding Hannah tells the story of three generations of women in Berlin and their search for self-determination: who they are, what they choose and what they are allowed to choose.',
@@ -347,118 +418,78 @@ export const projects: Project[] = [
         'Hidden-object games are widely played but rarely taken seriously. Choosing this form was an artistic decision: a mechanic many people already know lowers the threshold, so attention can move to the characters and their lives.',
         'Searching a scene becomes a way of looking closely at someone’s world: their rooms, their belongings and the traces of their decisions.',
       ],
-      media: [
-        slot('finding-hannah', 'story', {
-          kind: 'image',
-          aspect: '16 / 9',
-          intended: 'Visual or gameplay sequence involving the characters and their narrative',
-        }),
-        slot('finding-hannah', 'gameplay', {
-          kind: 'video',
-          aspect: '16 / 9',
-          intended: 'Gameplay demonstrating familiar interaction conventions',
-        }),
-      ],
+      media: [fh.intro, fh.bookshop],
     },
+    galleries: [
+      { title: 'Scenes', items: [fh.trailer, fh.cafe, fh.club, fh.desk, fh.wartime, fh.books, fh.courtyard] },
+    ],
     contribution: [
-      'I co-founded Fein Games and was game director and game designer of Finding Hannah, which was created together with the studio team.',
+      'As co-founder and co-CEO of Fein Games, I was creative director of Finding Hannah and led its creative, production and business direction. The game was made by the Fein Games team; its art is by Elena Resko and Bien Tran.',
     ],
-    process: [
-      slot('finding-hannah', 'process', {
-        kind: 'image',
-        aspect: '4 / 3',
-        intended: 'Optional: story, art-direction or character-development document',
-      }),
+    fullCredits: [
+      'A Fein Games production',
+      'Creative Direction: Lea Schönfelder',
+      'Art: Elena Resko and Bien Tran',
+      'With the Fein Games team, including Franziska Zeiner, Rebecca Harwick, Piotr Skrzypczyński, Ewa Chruściel, Kate Miller and Ian Stewart',
+      '© Fein Games',
     ],
+    process: [fh.eva, fh.hannah, fh.sigrid, fh.knitting, fh.prototype],
     context: [
       { label: 'Apple App Store Award, Cultural Impact', detail: '2023' },
       { label: 'Apple Design Award finalist, Inclusion', detail: '2023' },
     ],
     links: [],
-    // Replace with colours sampled from the artwork once available.
     theme: { bg: '#E9DDCB', fg: '#1C1B19', muted: '#5F5A52', line: '#CDBFA9' },
-    next: 'failing',
+    next: 'try-again',
   },
 
   /* ---------------------------------------------------------------- 04 */
   {
-    slug: 'failing',
+    slug: 'try-again',
     principal: true,
     number: '04',
-    title: 'Failing',
-    year: 'Ongoing',
-    medium: 'Illustrated stories and logic puzzles, browser prototype',
-    role: 'Concept, design and direction',
-    collaborators: 'Development and art credits to follow',
-    creditShort: 'Ongoing experimental work',
-    status: 'Work in progress · prototype',
+    title: 'Try Again',
+    year: '2026',
+    medium: 'Illustrated stories and line puzzles, browser prototype',
+    role: 'Independent work',
+    collaborators: 'Independent project',
+    creditShort: 'Try Again, 2026. © Lea Schönfelder',
+    status: 'Ongoing · prototype',
     question: 'What happens when everyday failure becomes the starting point for a playful story?',
     home: {
       headline: 'Small failures. Playable stories.',
       caption:
         'An ongoing experiment in interactive storytelling, combining personal accounts of everyday imperfection with short illustrated narratives and accessible logic puzzles.',
-      media: [
-        slot('failing', 'story-1', {
-          kind: 'image',
-          aspect: '3 / 4',
-          intended: 'Original illustrated story panel 1',
-        }),
-        slot('failing', 'story-2', {
-          kind: 'image',
-          aspect: '3 / 4',
-          intended: 'Original illustrated story panel 2',
-        }),
-        slot('failing', 'gameplay-portrait', {
-          kind: 'video',
-          aspect: '9 / 16',
-          intended: 'Portrait gameplay footage (muted loop or poster)',
-        }),
-      ],
+      media: [ta.s6[1], ta.s6[2], ta.gameplay],
     },
-    hero: slot('failing', 'hero', {
-      kind: 'video',
-      aspect: '9 / 16',
-      intended: 'Hero: original portrait gameplay footage',
-    }),
+    hero: ta.gameplay,
     heroLayout: 'portrait',
     work: [
-      'Failing is an ongoing experiment in interactive storytelling. It combines short, personal accounts of everyday imperfection with illustrated stories and approachable logic puzzles.',
+      'Try Again is an ongoing experiment in interactive storytelling. It combines short, personal accounts of everyday imperfection with illustrated stories and approachable logic puzzles.',
       'The project explores how vulnerability, humour and small interactive challenges can sit together, and how a brief, approachable interaction can carry a personal story without requiring any experience with games.',
     ],
     interaction: {
-      title: 'Story and puzzle',
+      title: 'Drawing a line through a story',
       text: [
-        'Each story is told through illustrated panels and continued through a small logic puzzle. The puzzles are not meant to test skill. They let players step briefly into the story, and sometimes fail at it themselves.',
+        'Each story is told through illustrated panels and continued through a small line puzzle. The player draws a line through a grid, and the drawing becomes part of the story: a planned week turns into an overcrowded calendar, a late garden fills with wildflowers.',
+        'The puzzles are not meant to test skill. They let players step briefly into the story, and sometimes fail at it themselves.',
       ],
-      media: [
-        slot('failing', 'story-sequence', {
-          kind: 'image',
-          aspect: '3 / 4',
-          intended: 'One complete illustrated story sequence',
-        }),
-        slot('failing', 'progression', {
-          kind: 'video',
-          aspect: '9 / 16',
-          intended: 'Clip showing interaction and narrative progression',
-        }),
-      ],
+      media: [ta.calendar, ta.garden],
     },
+    galleries: [
+      { title: 'Story 6: Late gardening', items: ta.s6 },
+      { title: 'Story 1', items: ta.s1 },
+    ],
     contribution: [
-      'Failing is my ongoing independent practice. The project is currently an experimental prototype, playable in the browser.',
+      'Try Again is my ongoing independent project. It is currently an experimental prototype, playable in the browser in English and German.',
     ],
-    process: [
-      slot('failing', 'process', {
-        kind: 'image',
-        aspect: '4 / 3',
-        intended: 'Concept material (working title “Try Again”)',
-      }),
-    ],
+    fullCredits: ['Try Again, 2026. © Lea Schönfelder'],
+    process: [],
     context: [
-      { label: 'Ongoing prototype', detail: 'Not a released game' },
-      { label: 'Earlier concept material', detail: 'Developed under the working title Try Again' },
+      { label: 'Ongoing prototype', detail: 'Playable in the browser, English and German' },
+      { label: 'Seven illustrated stories so far' },
     ],
-    links: [{ label: 'Play the Prototype', href: site.failingPrototype, external: true }],
-    // Replace with colours sampled from the illustrations once available.
+    links: [{ label: 'Play the Prototype', href: site.tryAgainPrototype, external: true }],
     theme: { bg: '#EFE3D2', fg: '#1C1B19', muted: '#635D55', line: '#D6C6B0' },
     next: 'monument-valley-2',
   },
@@ -477,19 +508,9 @@ export const projects: Project[] = [
     home: {
       headline: 'Monument Valley 2',
       caption: 'Exploring how spatial interaction can express the relationship between a mother and child.',
-      media: [
-        slot('monument-valley-2', 'thumb', {
-          kind: 'image',
-          aspect: '4 / 3',
-          intended: 'Small image of mother and child in the game',
-        }),
-      ],
+      media: [placeholder('monument-valley-2', 'thumb', 'image', '4 / 3', 'Small image of mother and child in the game')],
     },
-    hero: slot('monument-valley-2', 'hero', {
-      kind: 'image',
-      aspect: '16 / 9',
-      intended: 'Hero: one strong image',
-    }),
+    hero: placeholder('monument-valley-2', 'hero', 'image', '16 / 9', 'Hero: one strong image'),
     heroLayout: 'wide',
     work: [
       'Monument Valley 2 follows a mother and her child through a world of impossible architecture. Their relationship is expressed through space: how the two characters move together, apart and towards each other as the levels unfold.',
@@ -499,13 +520,7 @@ export const projects: Project[] = [
       text: [
         'Level design and interaction carry the story. Guiding two characters through the same architecture lets the relationship between them become something the player navigates directly.',
       ],
-      media: [
-        slot('monument-valley-2', 'gameplay', {
-          kind: 'video',
-          aspect: '16 / 9',
-          intended: 'Relevant gameplay or level-design sequence',
-        }),
-      ],
+      media: [placeholder('monument-valley-2', 'gameplay', 'video', '16 / 9', 'Relevant gameplay or level-design sequence')],
     },
     contribution: [
       'As senior game designer, I was involved in prototyping, interaction design and level design.',
@@ -526,11 +541,9 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
    -------------------------------------------------------------------------- */
 export interface Sample {
   slug: string;
-  /** m:ss — update with the real duration of the final clip */
-  duration: string;
   framing: string;
   role: string;
-  video: Media;
+  clips: Media[];
 }
 
 export const samples = {
@@ -540,56 +553,36 @@ export const samples = {
   items: [
     {
       slug: 'perfect-woman',
-      duration: '2:00',
       framing: 'Social expectations become a physical performance: players hold the poses their chosen life demands.',
-      role: 'Co-creator with Peter Lu · Game Director, Game Designer, Artist',
-      video: slot('samples', 'perfect-woman', {
-        kind: 'video',
-        aspect: '16 / 9',
-        intended: 'Work sample: Perfect Woman (target 2:00)',
-      }),
+      role: 'Concept, Art and Game Design · with Peter Lu (Programming and Game Design)',
+      clips: [pw.teaser, pw.gameplay],
     },
     {
       slug: 'assemble-with-care',
-      duration: '1:50',
       framing: 'Tactile repair as a way of approaching memory, relationships and care.',
-      role: 'Game Director & Lead Game Designer · ustwo games',
-      video: slot('samples', 'assemble-with-care', {
-        kind: 'video',
-        aspect: '16 / 9',
-        intended: 'Work sample: Assemble with Care (target 1:50)',
-      }),
+      role: 'Lead Game Designer; led the design and development team · ustwo games',
+      clips: [awc.trailer, awc.camera],
     },
     {
       slug: 'finding-hannah',
-      duration: '1:30',
       framing: 'A familiar casual-game form opens up a story about three generations of women.',
-      role: 'Co-founder, Game Director & Game Designer · Fein Games',
-      video: slot('samples', 'finding-hannah', {
-        kind: 'video',
-        aspect: '16 / 9',
-        intended: 'Work sample: Finding Hannah (target 1:30)',
-      }),
+      role: 'Co-founder & Co-CEO, Creative Direction · Fein Games',
+      clips: [fh.trailer],
     },
     {
-      slug: 'failing',
-      duration: '2:30',
-      framing: 'Personal stories of everyday failure, told through illustrations and small logic puzzles.',
+      slug: 'try-again',
+      framing: 'Personal stories of everyday failure, told through illustrations and small line puzzles.',
       role: 'Ongoing independent work · prototype',
-      video: slot('samples', 'failing', {
-        kind: 'video',
-        aspect: '9 / 16',
-        intended: 'Work sample: Failing, portrait (target 2:30)',
-      }),
+      clips: [ta.gameplay],
     },
   ] as Sample[],
 };
 
-/** Sum of "m:ss" durations, returned as "m:ss" */
-export function totalDuration(items: { duration: string }[]) {
-  const secs = items.reduce((t, i) => {
-    const [m, s] = i.duration.split(':').map(Number);
-    return t + m * 60 + s;
-  }, 0);
-  return `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
-}
+const toSecs = (d?: string) => {
+  if (!d) return 0;
+  const [m, s] = d.split(':').map(Number);
+  return m * 60 + s;
+};
+export const fmt = (secs: number) => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
+export const sampleSecs = (s: Sample) => s.clips.reduce((t, c) => t + toSecs(c.duration), 0);
+export const totalSecs = (items: Sample[]) => items.reduce((t, s) => t + sampleSecs(s), 0);

@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
 import Review from '../../components/Review.astro';
-import { projects, getProject, type Project, type Media as M } from '../../content/site';
+import { projects, getProject, visible, type Project, type Media as M } from '../../content/site';
 
 export function getStaticPaths() {
   return projects.map((p) => ({ params: { slug: p.slug }, props: { project: p } }));
@@ -15,8 +15,11 @@ const isLandscape = (m: M) => {
   const [w, h] = m.aspect.split('/').map((n) => parseFloat(n));
   return w / h > 1;
 };
-const im = p.interaction.media;
-const leadWide = im.length > 1 && isLandscape(im[0]);
+const im = p.interaction.media.filter(visible);
+const leadWide = im.length % 2 === 1 && im.length > 1 && isLandscape(im[0]);
+const process = p.process.filter(visible);
+const galleries = (p.galleries ?? []).map((g) => ({ ...g, items: g.items.filter(visible) })).filter((g) => g.items.length);
+const splitGallery = (items: M[]) => ({ videos: items.filter((m) => m.kind !== 'image'), images: items.filter((m) => m.kind === 'image') });
 const themeStyle = p.theme
   ? `--bg:${p.theme.bg};--fg:${p.theme.fg};--muted:${p.theme.muted};--line:${p.theme.line}`
   : '';
@@ -76,10 +79,30 @@ const description = `${p.title} (${p.year}) — ${p.question}`;
         <h2 id="int-h" class="int-title">{p.interaction.title}</h2>
         {p.interaction.text.map((t) => <p>{t}</p>)}
       </div>
-      <div class:list={['int-media', leadWide && 'lead-wide', `n-${im.length}`]}>
-        {im.map((m) => <Media media={m} />)}
-      </div>
+      {im.length > 0 && (
+        <div class:list={['int-media', leadWide && 'lead-wide', `n-${im.length}`]}>
+          {im.map((m) => <Media media={m} />)}
+        </div>
+      )}
     </section>
+
+    <!-- Galleries -->
+    {galleries.map((g, i) => {
+      const { videos, images } = splitGallery(g.items);
+      return (
+        <section class="wrap block gallery-block" aria-labelledby={`gal-${i}`}>
+          <h2 id={`gal-${i}`} class="block-label eyebrow">{g.title}</h2>
+          <div class="block-body">
+            {videos.map((m) => <Media media={m} class="gallery-video" />)}
+            {images.length > 0 && (
+              <div class:list={['gallery', images.length === 3 && 'cols-3']}>
+                {images.map((m) => <Media media={m} />)}
+              </div>
+            )}
+          </div>
+        </section>
+      );
+    })}
 
     <!-- 6. My Contribution -->
     <section class="wrap block" aria-labelledby="contrib-h">
@@ -93,12 +116,12 @@ const description = `${p.title} (${p.year}) — ${p.question}`;
     </section>
 
     <!-- 7. Process and Context -->
-    {(p.process.length > 0 || p.context.length > 0) && (
+    {(process.length > 0 || p.context.length > 0) && (
       <section class="wrap block" aria-labelledby="ctx-h">
         <h2 id="ctx-h" class="block-label eyebrow">Process &amp; Context</h2>
         <div class="block-body ctx">
-          {p.process.length > 0 && (
-            <div class="process">{p.process.map((m) => <Media media={m} />)}</div>
+          {process.length > 0 && (
+            <div class="process">{process.map((m) => <Media media={m} />)}</div>
           )}
           {p.context.length > 0 && (
             <ul class="context">
@@ -179,13 +202,16 @@ const description = `${p.title} (${p.year}) — ${p.question}`;
 
   .full-credits { list-style: none; padding: 0; font-size: 0.9375rem; color: var(--muted); }
 
-  .ctx { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); align-items: start; }
-  .ctx > :only-child { grid-column: 1 / -1; }
+  .ctx { display: grid; gap: clamp(2rem, 4vw, 3rem); }
+  .process { display: flex; flex-wrap: wrap; gap: var(--gutter); align-items: flex-start; }
+  .process > :global(.media) { flex: 1 1 220px; max-width: 380px; }
+  .process > :global(.media-scroll) { flex: 2 1 320px; max-width: 520px; }
+  .context { max-width: 36rem; }
+  .gallery-block :global(.gallery-video) { margin-bottom: var(--gutter); }
   .context { list-style: none; padding: 0; margin: 0; }
   .context li { padding: 0.9rem 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; }
   .context li:last-child { border-bottom: 1px solid var(--line); }
   .ctx-detail { color: var(--muted); font-size: 0.875rem; }
-  @media (max-width: 760px) { .ctx { grid-template-columns: 1fr; } }
 
   .next { padding-block: clamp(3rem, 7vw, 6rem); border-top: 1px solid var(--line); }
   .next a { text-decoration: none; display: inline-flex; flex-direction: column; gap: 0.6rem; }

@@ -2,13 +2,14 @@
 import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
 import Review from '../components/Review.astro';
-import { home, getProject, site } from '../content/site';
+import { home, getProject, site, visible } from '../content/site';
 
 const pw = getProject('perfect-woman');
 const awc = getProject('assemble-with-care');
 const fh = getProject('finding-hannah');
-const fl = getProject('failing');
+const fl = getProject('try-again');
 const mv = getProject('monument-valley-2');
+const mvMedia = mv.home!.media[0];
 
 const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string }) =>
   t ? `--bg:${t.bg};--fg:${t.fg};--muted:${t.muted};--line:${t.line}` : '';
@@ -35,8 +36,8 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
         <a href={`/work/${pw.slug}`} class="art-pw" aria-label="Perfect Woman, 2014">
           <Media media={home.openingMedia.perfectWoman} eager />
         </a>
-        <a href={`/work/${fl.slug}`} class="art-fl" aria-label="Failing, ongoing">
-          <Media media={home.openingMedia.failing} eager />
+        <a href={`/work/${fl.slug}`} class="art-fl" aria-label="Try Again, ongoing">
+          <Media media={home.openingMedia.tryAgain} eager />
         </a>
       </div>
     </div>
@@ -64,7 +65,10 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
     <!-- 03 PERFECT WOMAN --------------------------------------------------->
     <section class="section pw" aria-labelledby="pw-title">
       <div class="wrap">
-        <a href={`/work/${pw.slug}`} class="media-link"><Media media={pw.home!.media[0]} /></a>
+        <div class="pw-media">
+          <a href={`/work/${pw.slug}`} class="media-link"><Media media={pw.home!.media[0]} /></a>
+          <a href={`/work/${pw.slug}`} class="media-link"><Media media={pw.home!.media[1]} /></a>
+        </div>
         <div class="pw-text">
           <div>
             <p class="meta"><span>{pw.number}</span><span>{pw.title}</span><span>{pw.year}</span></p>
@@ -109,7 +113,7 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
       </div>
     </section>
 
-    <!-- 06 FAILING --------------------------------------------------------->
+    <!-- 06 TRY AGAIN --------------------------------------------------------->
     <section class="section fl themed" style={themeStyle(fl.theme)} aria-labelledby="fl-title">
       <div class="wrap fl-grid">
         <div class="fl-text">
@@ -119,7 +123,7 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
           <p><span class="status-tag">{fl.status}</span></p>
           <div class="links">
             <a class="link-arrow" href={`/work/${fl.slug}`}>Explore {fl.title}</a>
-            <a class="link-arrow" href={site.failingPrototype} target="_blank" rel="noopener">Play the Prototype</a>
+            <a class="link-arrow" href={site.tryAgainPrototype} target="_blank" rel="noopener">Play the Prototype</a>
           </div>
         </div>
         <div class="fl-media">
@@ -135,8 +139,8 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
       <div class="wrap">
         <h2 id="other-title" class="eyebrow">Other selected work</h2>
         <hr class="rule" />
-        <div class="other-item">
-          <a href={`/work/${mv.slug}`} class="media-link other-media"><Media media={mv.home!.media[0]} caption={false} /></a>
+        <div class:list={['other-item', !visible(mvMedia) && 'no-media']}>
+          {visible(mvMedia) && <a href={`/work/${mv.slug}`} class="media-link other-media"><Media media={mvMedia} caption={false} /></a>}
           <div>
             <h3><a href={`/work/${mv.slug}`}>{mv.title}</a> <span class="other-year">{mv.year}</span></h3>
             <p>{mv.home!.caption}</p>
@@ -234,6 +238,8 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
 
   /* 03 Perfect Woman — immersive */
   .pw { padding-top: 0; }
+  .pw-media { display: grid; grid-template-columns: 16fr 6fr; gap: var(--gutter); align-items: end; }
+  @media (max-width: 760px) { .pw-media { grid-template-columns: 1fr; } .pw-media > :last-child { max-width: 320px; } }
   .pw-text {
     display: grid; grid-template-columns: 7fr 4fr; gap: var(--gutter);
     align-items: end; margin-top: 2.5rem;
@@ -272,6 +278,7 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
   .other { padding-block: calc(var(--space-section) * 0.6); }
   .other h2 { font-family: var(--sans); font-size: var(--fs-small); margin-bottom: 1rem; }
   .other-item { display: grid; grid-template-columns: minmax(140px, 3fr) 8fr; gap: var(--gutter); align-items: center; padding-block: 1.75rem; }
+  .other-item.no-media { grid-template-columns: 1fr; }
   .other-item h3 { font-size: 2rem; margin-bottom: 0.5rem; }
   .other-item h3 a { text-decoration: none; }
   .other-item h3 a:hover { text-decoration: underline; }
