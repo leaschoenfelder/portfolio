@@ -8,12 +8,13 @@
   --line: #D8D3CB;
   --accent: #B8493D;
 
-  --serif: 'Instrument Serif', 'Times New Roman', serif;
+  /* Headlines: Lea Block (Lea Schönfelder's own typeface). Arrows fall back to Plex Sans. */
+  --display: 'Lea Block', 'IBM Plex Sans', system-ui, sans-serif;
   --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
 
-  --fs-hero: clamp(3rem, 6.4vw, 6.75rem);      /* ~108px max */
-  --fs-h2: clamp(2.4rem, 4.6vw, 4rem);         /* 40–64px */
-  --fs-h3: clamp(2.1rem, 3.6vw, 3.5rem);       /* 36–56px */
+  --fs-hero: clamp(2.5rem, 5.2vw, 5.4rem);     /* Lea Block runs wide */
+  --fs-h2: clamp(2rem, 3.7vw, 3.3rem);
+  --fs-h3: clamp(1.7rem, 2.8vw, 2.6rem);
   --fs-body: clamp(1.0625rem, 0.3vw + 1rem, 1.1875rem); /* 17–19px */
   --fs-small: 0.8125rem;                       /* 13px */
 
@@ -21,6 +22,19 @@
   --read: 38rem;
   --gutter: clamp(16px, 4vw, 48px);
   --space-section: clamp(5rem, 11vw, 10rem);
+}
+
+@font-face {
+  font-family: 'Lea Block'; font-weight: 100 300; font-style: normal; font-display: swap;
+  src: url('/fonts/LeaBlock-Thin.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lea Block'; font-weight: 400 600; font-style: normal; font-display: swap;
+  src: url('/fonts/LeaBlock-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lea Block'; font-weight: 700 900; font-style: normal; font-display: swap;
+  src: url('/fonts/LeaBlock-Bold.ttf') format('truetype');
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -48,10 +62,10 @@ body {
 img, video, iframe { display: block; max-width: 100%; }
 
 h1, h2, h3, h4 {
-  font-family: var(--serif);
+  font-family: var(--display);
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.01em;
+  line-height: 1.1;
+  letter-spacing: 0;
   margin: 0;
   text-wrap: balance;
 }
@@ -105,7 +119,7 @@ a:hover { text-decoration-color: var(--accent); }
 .lede { font-size: clamp(1.15rem, 0.6vw + 1rem, 1.35rem); line-height: 1.55; }
 
 .serif-quote {
-  font-family: var(--serif);
+  font-family: var(--display);
   font-size: var(--fs-h3);
   line-height: 1.08;
 }

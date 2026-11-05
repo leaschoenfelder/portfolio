@@ -192,7 +192,7 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
   .opening-text { grid-column: 1 / 8; }
   .opening h1 { font-size: var(--fs-hero); margin: 1rem 0 1.75rem; }
   .opening h1 .line { display: block; }
-  .opening h1 .line:nth-child(2) { padding-left: 0.6em; font-style: italic; }
+  .opening h1 .line:nth-child(2) { padding-left: 0.6em; font-weight: 200; }
   .opening .lede { max-width: 34rem; }
   .opening-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 2rem; margin-top: 2.25rem; }
   .cta-primary {
@@ -227,7 +227,7 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
   .inquiry-item h3 { font-size: var(--fs-h3); margin: 0.75rem 0 1.25rem; }
   .inquiry-q { font-size: 1.25rem; line-height: 1.5; max-width: 28rem; }
   .inquiry-bridge {
-    font-family: var(--serif); font-style: italic;
+    font-family: var(--display); font-weight: 400;
     font-size: clamp(1.5rem, 2.4vw, 2.1rem); line-height: 1.25;
     max-width: 40rem; margin: clamp(3.5rem, 7vw, 6rem) auto 0; text-align: center;
   }

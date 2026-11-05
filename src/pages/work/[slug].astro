@@ -165,7 +165,7 @@ const description = `${p.title} (${p.year}) — ${p.question}`;
   @media (max-width: 760px) { .facts { grid-template-columns: 1fr 1fr; } }
 
   .question {
-    font-family: var(--serif); font-style: italic;
+    font-family: var(--display); font-weight: 200;
     font-size: var(--fs-h2); line-height: 1.08;
     max-width: 18ch; margin: clamp(3.5rem, 8vw, 6.5rem) 0 clamp(3rem, 6vw, 5rem) 8.33%;
     text-wrap: balance;
@@ -215,7 +215,7 @@ const description = `${p.title} (${p.year}) — ${p.question}`;
 
   .next { padding-block: clamp(3rem, 7vw, 6rem); border-top: 1px solid var(--line); }
   .next a { text-decoration: none; display: inline-flex; flex-direction: column; gap: 0.6rem; }
-  .next-title { font-family: var(--serif); font-size: var(--fs-h2); line-height: 1; }
+  .next-title { font-family: var(--display); font-size: var(--fs-h2); line-height: 1; }
   .next a:hover .next-title { color: var(--accent); }
 
   .supplementary .p-head h1 { font-size: var(--fs-h2); }
