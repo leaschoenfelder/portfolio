@@ -11,6 +11,12 @@ const fl = getProject('try-again');
 const mv = getProject('monument-valley-2');
 const mvMedia = mv.home!.media[0];
 
+/** Width/height of an aspect string like "16 / 9"; used to give pictures equal heights. */
+const ratio = (aspect: string) => {
+  const [w, h] = aspect.split('/').map((n) => parseFloat(n));
+  return +(w / h).toFixed(4);
+};
+
 const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string }) =>
   t ? `--bg:${t.bg};--fg:${t.fg};--muted:${t.muted};--line:${t.line}` : '';
 ---
@@ -65,7 +71,7 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
     <!-- 03 PERFECT WOMAN --------------------------------------------------->
     <section class="section pw" aria-labelledby="pw-title">
       <div class="wrap">
-        <div class="pw-media">
+        <div class="pw-media" style={`--cols: ${pw.home!.media.slice(0, 2).map((m) => `${ratio(m.aspect)}fr`).join(' ')}`}>
           <a href={`/work/${pw.slug}`} class="media-link"><Media media={pw.home!.media[0]} /></a>
           <a href={`/work/${pw.slug}`} class="media-link"><Media media={pw.home!.media[1]} /></a>
         </div>
@@ -206,14 +212,15 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
   .cta-label::after { content: ' →'; }
   .cta-sub { font-size: var(--fs-small); opacity: 0.8; }
 
-  .opening-art { grid-column: 8 / 13; position: relative; }
-  .art-pw { display: block; width: 88%; }
-  .art-fl {
-    display: block; width: 44%; position: relative;
-    margin: -24% 0 0 auto;
+  /* Opening pictures: stacked, flush right, no overlap */
+  .opening-art {
+    grid-column: 8 / 13;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 1.75rem;
   }
-  .art-fl :global(.media-frame) { outline: 10px solid var(--bg); }
+  .art-pw { display: block; width: 100%; }
+  .art-fl { display: block; width: 46%; }
   .opening-art a { text-decoration: none; }
+  .opening-art :global(figcaption) { text-align: right; }
 
   @media (max-width: 900px) {
     .opening { min-height: 0; }
@@ -238,8 +245,16 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
 
   /* 03 Perfect Woman — immersive */
   .pw { padding-top: 0; }
-  .pw-media { display: grid; grid-template-columns: 16fr 6fr; gap: var(--gutter); align-items: end; }
-  @media (max-width: 760px) { .pw-media { grid-template-columns: 1fr; } .pw-media > :last-child { max-width: 320px; } }
+  .pw-media {
+    display: grid; grid-template-columns: var(--cols); grid-template-rows: auto auto;
+    column-gap: var(--gutter); align-items: end;
+  }
+  .pw-media > a { display: grid; grid-row: span 2; grid-template-rows: subgrid; }
+  .pw-media :global(.media) { display: grid; grid-row: span 2; grid-template-rows: subgrid; align-items: end; }
+  @media (max-width: 760px) {
+    .pw-media { grid-template-columns: 1fr; row-gap: var(--gutter); }
+    .pw-media > :last-child { max-width: 320px; }
+  }
   .pw-text {
     display: grid; grid-template-columns: 7fr 4fr; gap: var(--gutter);
     align-items: end; margin-top: 2.5rem;
@@ -263,15 +278,16 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
   /* 06 Failing — intimate, portrait */
   .fl-grid { display: grid; grid-template-columns: 4fr 7fr; gap: calc(var(--gutter) * 1.5); align-items: center; }
   .fl-text h2 { margin-bottom: 1.5rem; }
+  /* Pictures share one bottom line; captions sit in a row below */
   .fl-media {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; align-items: end;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto;
+    column-gap: 1rem; align-items: end;
   }
-  .fl-media :global(.fl-panel:nth-child(2)) { transform: translateY(-2.5rem); }
+  .fl-media :global(.media) { display: grid; grid-row: span 2; grid-template-rows: subgrid; align-items: end; }
   @media (max-width: 900px) {
     .fl-grid { grid-template-columns: 1fr; }
-    .fl-media { grid-template-columns: 1fr 1fr; }
-    .fl-media :global(.fl-panel:nth-child(2)) { transform: none; }
-    .fl-media :global(.fl-video) { grid-column: 1 / -1; max-width: 420px; width: 100%; margin-inline: auto; }
+    .fl-media { grid-template-columns: 1fr 1fr; row-gap: 1rem; }
+    /* video takes one column, so it lines up under the first panel */
   }
 
   /* 07 Other work — supplementary, quiet */
