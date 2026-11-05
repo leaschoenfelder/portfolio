@@ -21,6 +21,7 @@
   --max: 1280px;
   --read: 38rem;
   --gutter: clamp(16px, 4vw, 48px);
+  --img-gap: 1rem;                             /* space between pictures set side by side */
   --space-section: clamp(5rem, 11vw, 10rem);
 }
 
