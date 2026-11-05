@@ -1,0 +1,196 @@
+---
+import Base from '../../layouts/Base.astro';
+import Media from '../../components/Media.astro';
+import Review from '../../components/Review.astro';
+import { projects, getProject, type Project, type Media as M } from '../../content/site';
+
+export function getStaticPaths() {
+  return projects.map((p) => ({ params: { slug: p.slug }, props: { project: p } }));
+}
+
+const { project: p } = Astro.props as { project: Project };
+const next = getProject(p.next);
+
+const isLandscape = (m: M) => {
+  const [w, h] = m.aspect.split('/').map((n) => parseFloat(n));
+  return w / h > 1;
+};
+const im = p.interaction.media;
+const leadWide = im.length > 1 && isLandscape(im[0]);
+const themeStyle = p.theme
+  ? `--bg:${p.theme.bg};--fg:${p.theme.fg};--muted:${p.theme.muted};--line:${p.theme.line}`
+  : '';
+const description = `${p.title} (${p.year}) — ${p.question}`;
+---
+<Base title={p.title} description={description}>
+  <article class:list={['project', `layout-${p.heroLayout}`, !p.principal && 'supplementary']}>
+    <!-- 1. Title and metadata  +  2. Artistic question  +  3. Hero -->
+    <div class="top themed" style={themeStyle}>
+      <header class="wrap p-head">
+        <p class="meta">
+          {p.number && <span>{p.number}</span>}
+          <span>{p.principal ? 'Principal work' : 'Supplementary work'}</span>
+          <span>{p.year}</span>
+        </p>
+        <h1>{p.title}</h1>
+        {p.status && <p class="status"><span class="status-tag">{p.status}</span></p>}
+        <dl class="facts">
+          <div><dt>Year</dt><dd>{p.year}</dd></div>
+          <div><dt>Format</dt><dd>{p.medium}</dd></div>
+          <div><dt>Role</dt><dd>{p.role}</dd></div>
+          <div><dt>With</dt><dd>{p.collaborators}</dd></div>
+        </dl>
+      </header>
+
+      <div class="wrap">
+        <p class="question">{p.question}</p>
+      </div>
+
+      {p.heroLayout === 'wide' && (
+        <div class="wrap hero"><Media media={p.hero} eager /></div>
+      )}
+    </div>
+
+    <!-- 4. The Work -->
+    <section class="wrap block" aria-labelledby="work-h">
+      <h2 id="work-h" class="block-label eyebrow">The Work</h2>
+      <div class:list={['block-body', p.heroLayout === 'portrait' && 'with-portrait']}>
+        <div class="text">
+          {p.work.map((t) => <p class="lede">{t}</p>)}
+          {p.links.length > 0 && (
+            <div class="links">
+              {p.links.map((l) => (
+                <a class="link-arrow" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}</a>
+              ))}
+            </div>
+          )}
+        </div>
+        {p.heroLayout === 'portrait' && <Media media={p.hero} eager class="portrait-hero" />}
+      </div>
+    </section>
+
+    <!-- 5. The Interaction -->
+    <section class="wrap block" aria-labelledby="int-h">
+      <p class="block-label eyebrow">The Interaction</p>
+      <div class="block-body">
+        <h2 id="int-h" class="int-title">{p.interaction.title}</h2>
+        {p.interaction.text.map((t) => <p>{t}</p>)}
+      </div>
+      <div class:list={['int-media', leadWide && 'lead-wide', `n-${im.length}`]}>
+        {im.map((m) => <Media media={m} />)}
+      </div>
+    </section>
+
+    <!-- 6. My Contribution -->
+    <section class="wrap block" aria-labelledby="contrib-h">
+      <h2 id="contrib-h" class="block-label eyebrow">My Contribution</h2>
+      <div class="block-body">
+        {p.contribution.map((t) => <p>{t}</p>)}
+        {p.fullCredits && (
+          <ul class="full-credits">{p.fullCredits.map((c) => <li>{c}</li>)}</ul>
+        )}
+      </div>
+    </section>
+
+    <!-- 7. Process and Context -->
+    {(p.process.length > 0 || p.context.length > 0) && (
+      <section class="wrap block" aria-labelledby="ctx-h">
+        <h2 id="ctx-h" class="block-label eyebrow">Process &amp; Context</h2>
+        <div class="block-body ctx">
+          {p.process.length > 0 && (
+            <div class="process">{p.process.map((m) => <Media media={m} />)}</div>
+          )}
+          {p.context.length > 0 && (
+            <ul class="context">
+              {p.context.map((c) => (
+                <li>
+                  {c.href ? <a href={c.href} target="_blank" rel="noopener">{c.label}</a> : <span>{c.label}</span>}
+                  {c.detail && <span class="ctx-detail">{c.detail}</span>}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
+    )}
+
+    <div class="wrap"><Review id={p.slug} /></div>
+
+    <!-- 8. Next Work -->
+    <nav class="wrap next" aria-label="Next work">
+      <a href={`/work/${next.slug}`}>
+        <span class="eyebrow">Next work</span>
+        <span class="next-title">{next.title} <span aria-hidden="true">→</span></span>
+      </a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .themed { background: var(--bg); color: var(--fg); }
+  .top { padding-bottom: clamp(2rem, 5vw, 4rem); }
+  .p-head { padding-top: clamp(3rem, 8vw, 6rem); }
+  .p-head h1 { font-size: var(--fs-hero); margin: 1rem 0 1.5rem; }
+  .status { margin-bottom: 1.5rem; }
+
+  .facts {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem var(--gutter);
+    margin: 0; padding-top: 1.25rem; border-top: 1px solid var(--line);
+  }
+  .facts dt { font-size: var(--fs-small); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 500; }
+  .facts dd { margin: 0.3rem 0 0; font-size: 0.9375rem; line-height: 1.45; }
+  @media (max-width: 760px) { .facts { grid-template-columns: 1fr 1fr; } }
+
+  .question {
+    font-family: var(--serif); font-style: italic;
+    font-size: var(--fs-h2); line-height: 1.08;
+    max-width: 18ch; margin: clamp(3.5rem, 8vw, 6.5rem) 0 clamp(3rem, 6vw, 5rem) 8.33%;
+    text-wrap: balance;
+  }
+  @media (max-width: 760px) { .question { margin-left: 0; } }
+
+  .block {
+    display: grid; grid-template-columns: 3fr 9fr; column-gap: var(--gutter);
+    padding-block: clamp(3rem, 7vw, 6rem);
+    border-top: 1px solid var(--line);
+  }
+  .top + .block { border-top: 0; }
+  .block-label { font-family: var(--sans); font-size: var(--fs-small); margin: 0.4rem 0 1.5rem; }
+  .block-body { grid-column: 2; }
+  .int-title { font-size: var(--fs-h3); margin-bottom: 1.5rem; }
+  @media (max-width: 760px) {
+    .block { grid-template-columns: 1fr; }
+    .block-body { grid-column: 1; }
+  }
+
+  .with-portrait { display: grid; grid-template-columns: 1fr minmax(240px, 360px); gap: calc(var(--gutter) * 1.5); align-items: start; }
+  @media (max-width: 760px) { .with-portrait { grid-template-columns: 1fr; } }
+
+  .int-media {
+    grid-column: 1 / -1; margin-top: clamp(2.5rem, 5vw, 4rem);
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gutter); align-items: start;
+  }
+  .int-media.n-1 { grid-template-columns: 1fr; }
+  .int-media.lead-wide > :global(:first-child) { grid-column: 1 / -1; }
+  .layout-portrait .int-media { grid-template-columns: 4fr 3fr; max-width: 900px; margin-inline: auto; width: 100%; }
+  @media (max-width: 760px) {
+    .int-media, .layout-portrait .int-media { grid-template-columns: 1fr; }
+  }
+
+  .full-credits { list-style: none; padding: 0; font-size: 0.9375rem; color: var(--muted); }
+
+  .ctx { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); align-items: start; }
+  .ctx > :only-child { grid-column: 1 / -1; }
+  .context { list-style: none; padding: 0; margin: 0; }
+  .context li { padding: 0.9rem 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; }
+  .context li:last-child { border-bottom: 1px solid var(--line); }
+  .ctx-detail { color: var(--muted); font-size: 0.875rem; }
+  @media (max-width: 760px) { .ctx { grid-template-columns: 1fr; } }
+
+  .next { padding-block: clamp(3rem, 7vw, 6rem); border-top: 1px solid var(--line); }
+  .next a { text-decoration: none; display: inline-flex; flex-direction: column; gap: 0.6rem; }
+  .next-title { font-family: var(--serif); font-size: var(--fs-h2); line-height: 1; }
+  .next a:hover .next-title { color: var(--accent); }
+
+  .supplementary .p-head h1 { font-size: var(--fs-h2); }
+</style>

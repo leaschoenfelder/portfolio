@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import { principalProjects } from '../content/site';
+---
+<Base title="Page not found">
+  <section class="wrap nf">
+    <p class="eyebrow">404</p>
+    <h1>This page doesn’t exist.</h1>
+    <p class="lede">Perhaps you were looking for one of these:</p>
+    <ul>
+      <li><a href="/samples">Selected Work Samples</a></li>
+      {principalProjects.map((p) => <li><a href={`/work/${p.slug}`}>{p.title}</a></li>)}
+      <li><a href="/">Home</a></li>
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .nf { padding-block: clamp(4rem, 10vw, 8rem); }
+  .nf h1 { font-size: var(--fs-h2); margin: 1rem 0 1.5rem; }
+  .nf ul { list-style: none; padding: 0; font-family: var(--serif); font-size: 1.75rem; line-height: 1.5; }
+</style>

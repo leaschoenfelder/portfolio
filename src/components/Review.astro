@@ -1,0 +1,19 @@
+---
+/**
+ * Shows "to confirm" notes in the local preview only. Never in the published build.
+ * Notes come from src/content/review.local.ts, which is not committed to GitHub;
+ * if that file is missing, nothing is shown.
+ */
+interface Props { id: string }
+const { id } = Astro.props;
+const mods = import.meta.glob<{ review: Record<string, string[]> }>('../content/review.local.ts', { eager: true });
+const all = Object.values(mods)[0]?.review ?? {};
+const notes = all[id] ?? [];
+const show = import.meta.env.DEV && notes.length > 0;
+---
+{show && (
+  <aside class="review" aria-label="Review notes (only visible in development)">
+    <strong>To confirm before submission (dev only)</strong>
+    <ul>{notes.map((n) => <li>{n}</li>)}</ul>
+  </aside>
+)}

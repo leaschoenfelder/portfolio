@@ -1,0 +1,300 @@
+---
+import Base from '../layouts/Base.astro';
+import Media from '../components/Media.astro';
+import Review from '../components/Review.astro';
+import { home, getProject, site } from '../content/site';
+
+const pw = getProject('perfect-woman');
+const awc = getProject('assemble-with-care');
+const fh = getProject('finding-hannah');
+const fl = getProject('failing');
+const mv = getProject('monument-valley-2');
+
+const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string }) =>
+  t ? `--bg:${t.bg};--fg:${t.fg};--muted:${t.muted};--line:${t.line}` : '';
+---
+<Base>
+  <!-- 01 OPENING ---------------------------------------------------------->
+  <section class="opening" aria-labelledby="opening-title">
+    <div class="wrap opening-grid">
+      <div class="opening-text">
+        <p class="eyebrow">{home.eyebrow}</p>
+        <h1 id="opening-title">
+          {home.headline.map((line) => <span class="line">{line}</span>)}
+        </h1>
+        <p class="lede">{home.intro}</p>
+        <div class="opening-cta">
+          <a class="cta-primary" href="/samples">
+            <span class="cta-label">{home.samplesLabel}</span>
+            <span class="cta-sub">{home.samplesSub}</span>
+          </a>
+          <a class="link-quiet" href="#work">{home.exploreLabel} ↓</a>
+        </div>
+      </div>
+      <div class="opening-art">
+        <a href={`/work/${pw.slug}`} class="art-pw" aria-label="Perfect Woman, 2014">
+          <Media media={home.openingMedia.perfectWoman} eager />
+        </a>
+        <a href={`/work/${fl.slug}`} class="art-fl" aria-label="Failing, ongoing">
+          <Media media={home.openingMedia.failing} eager />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 ARTISTIC INQUIRY -------------------------------------------------->
+  <section class="section inquiry" aria-labelledby="inquiry-title">
+    <div class="wrap">
+      <h2 id="inquiry-title" class="visually-hidden">Artistic inquiry</h2>
+      <div class="inquiry-grid">
+        {home.inquiry.map((q, i) => (
+          <div class="inquiry-item">
+            <p class="eyebrow">0{i + 1}</p>
+            <h3>{q.title}</h3>
+            <p class="inquiry-q">{q.text}</p>
+          </div>
+        ))}
+      </div>
+      <p class="inquiry-bridge">{home.inquiryBridge}</p>
+      <Review id="home" />
+    </div>
+  </section>
+
+  <div id="work">
+    <!-- 03 PERFECT WOMAN --------------------------------------------------->
+    <section class="section pw" aria-labelledby="pw-title">
+      <div class="wrap">
+        <a href={`/work/${pw.slug}`} class="media-link"><Media media={pw.home!.media[0]} /></a>
+        <div class="pw-text">
+          <div>
+            <p class="meta"><span>{pw.number}</span><span>{pw.title}</span><span>{pw.year}</span></p>
+            <h2 id="pw-title">{pw.home!.headline}</h2>
+          </div>
+          <div>
+            <p>{pw.home!.caption}</p>
+            <p class="credit">{pw.creditShort}</p>
+            <a class="link-arrow" href={`/work/${pw.slug}`}>Explore {pw.title}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 ASSEMBLE WITH CARE ---------------------------------------------->
+    <section class="section awc" aria-labelledby="awc-title">
+      <div class="wrap awc-grid">
+        <a href={`/work/${awc.slug}`} class="media-link awc-media"><Media media={awc.home!.media[0]} /></a>
+        <div class="awc-text">
+          <p class="meta"><span>{awc.number}</span><span>{awc.title}</span><span>{awc.year}</span></p>
+          <h2 id="awc-title">{awc.home!.headline}</h2>
+          <p>{awc.home!.caption}</p>
+          <p class="credit">{awc.creditShort}</p>
+          <a class="link-arrow" href={`/work/${awc.slug}`}>Explore {awc.title}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 FINDING HANNAH -------------------------------------------------->
+    <section class="section fh themed" style={themeStyle(fh.theme)} aria-labelledby="fh-title">
+      <div class="wrap">
+        <p class="meta"><span>{fh.number}</span><span>{fh.title}</span><span>{fh.year}</span></p>
+        <a href={`/work/${fh.slug}`} class="media-link fh-media"><Media media={fh.home!.media[0]} /></a>
+        <div class="fh-text">
+          <h2 id="fh-title">{fh.home!.headline}</h2>
+          <div>
+            <p>{fh.home!.caption}</p>
+            <p class="credit">{fh.creditShort}</p>
+            <a class="link-arrow" href={`/work/${fh.slug}`}>Explore {fh.title}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 FAILING --------------------------------------------------------->
+    <section class="section fl themed" style={themeStyle(fl.theme)} aria-labelledby="fl-title">
+      <div class="wrap fl-grid">
+        <div class="fl-text">
+          <p class="meta"><span>{fl.number}</span><span>{fl.title}</span><span>{fl.year}</span></p>
+          <h2 id="fl-title">{fl.home!.headline}</h2>
+          <p>{fl.home!.caption}</p>
+          <p><span class="status-tag">{fl.status}</span></p>
+          <div class="links">
+            <a class="link-arrow" href={`/work/${fl.slug}`}>Explore {fl.title}</a>
+            <a class="link-arrow" href={site.failingPrototype} target="_blank" rel="noopener">Play the Prototype</a>
+          </div>
+        </div>
+        <div class="fl-media">
+          <Media media={fl.home!.media[0]} class="fl-panel" />
+          <Media media={fl.home!.media[1]} class="fl-panel" />
+          <Media media={fl.home!.media[2]} class="fl-video" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 OTHER SELECTED WORK -------------------------------------------->
+    <section class="section other" aria-labelledby="other-title">
+      <div class="wrap">
+        <h2 id="other-title" class="eyebrow">Other selected work</h2>
+        <hr class="rule" />
+        <div class="other-item">
+          <a href={`/work/${mv.slug}`} class="media-link other-media"><Media media={mv.home!.media[0]} caption={false} /></a>
+          <div>
+            <h3><a href={`/work/${mv.slug}`}>{mv.title}</a> <span class="other-year">{mv.year}</span></h3>
+            <p>{mv.home!.caption}</p>
+            <p class="credit">{mv.creditShort}</p>
+          </div>
+        </div>
+        <hr class="rule" />
+      </div>
+    </section>
+  </div>
+
+  <!-- 08 ABOUT ------------------------------------------------------------>
+  <section class="section about" id="about" aria-labelledby="about-title">
+    <div class="wrap about-grid">
+      <h2 id="about-title">About</h2>
+      <div class="about-body">
+        {home.bio.map((p) => <p class="lede">{p}</p>)}
+        {home.exhibitionsLine && <p>{home.exhibitionsLine}</p>}
+        <h3 class="eyebrow recog-title">Selected recognition</h3>
+        <ul class="recog">
+          {home.recognition.map((r) => (
+            <li>
+              <span class="recog-award">{r.award}</span>
+              <span class="recog-note">{r.note}</span>
+              <span class="recog-year">{r.year}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .media-link { display: block; text-decoration: none; }
+  .media-link :global(.media-frame) { transition: opacity .25s; }
+  .media-link:hover :global(.media-frame) { opacity: 0.92; }
+
+  /* 01 Opening */
+  .opening {
+    min-height: calc(100svh - 4rem);
+    display: grid; align-items: center;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+  .opening-grid {
+    display: grid; grid-template-columns: repeat(12, 1fr);
+    column-gap: var(--gutter); align-items: center;
+  }
+  .opening-text { grid-column: 1 / 8; }
+  .opening h1 { font-size: var(--fs-hero); margin: 1rem 0 1.75rem; }
+  .opening h1 .line { display: block; }
+  .opening h1 .line:nth-child(2) { padding-left: 0.6em; font-style: italic; }
+  .opening .lede { max-width: 34rem; }
+  .opening-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 2rem; margin-top: 2.25rem; }
+  .cta-primary {
+    display: inline-flex; flex-direction: column; gap: 0.15rem;
+    background: var(--fg); color: var(--bg); text-decoration: none;
+    padding: 0.9rem 1.4rem 0.85rem;
+    transition: background .2s;
+  }
+  .cta-primary:hover { background: var(--accent); }
+  .cta-label { font-weight: 600; }
+  .cta-label::after { content: ' →'; }
+  .cta-sub { font-size: var(--fs-small); opacity: 0.8; }
+
+  .opening-art { grid-column: 8 / 13; position: relative; }
+  .art-pw { display: block; width: 88%; }
+  .art-fl {
+    display: block; width: 44%; position: relative;
+    margin: -24% 0 0 auto;
+  }
+  .art-fl :global(.media-frame) { outline: 10px solid var(--bg); }
+  .opening-art a { text-decoration: none; }
+
+  @media (max-width: 900px) {
+    .opening { min-height: 0; }
+    .opening-text, .opening-art { grid-column: 1 / -1; }
+    .opening-art { margin-top: 3rem; }
+  }
+
+  /* 02 Inquiry */
+  .inquiry { border-top: 1px solid var(--line); }
+  .inquiry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); }
+  .inquiry-item h3 { font-size: var(--fs-h3); margin: 0.75rem 0 1.25rem; }
+  .inquiry-q { font-size: 1.25rem; line-height: 1.5; max-width: 28rem; }
+  .inquiry-bridge {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(1.5rem, 2.4vw, 2.1rem); line-height: 1.25;
+    max-width: 40rem; margin: clamp(3.5rem, 7vw, 6rem) auto 0; text-align: center;
+  }
+  @media (max-width: 760px) { .inquiry-grid { grid-template-columns: 1fr; gap: 3rem; } }
+
+  /* Shared project headlines */
+  #work h2 { font-size: var(--fs-h2); margin-top: 0.9rem; }
+
+  /* 03 Perfect Woman — immersive */
+  .pw { padding-top: 0; }
+  .pw-text {
+    display: grid; grid-template-columns: 7fr 4fr; gap: var(--gutter);
+    align-items: end; margin-top: 2.5rem;
+  }
+  .pw-text h2 { max-width: 13ch; }
+  @media (max-width: 760px) { .pw-text { grid-template-columns: 1fr; } }
+
+  /* 04 Assemble with Care — editorial */
+  .awc-grid { display: grid; grid-template-columns: 7fr 4fr; gap: calc(var(--gutter) * 1.5); align-items: center; }
+  .awc-text h2 { margin-bottom: 1.5rem; }
+  @media (max-width: 760px) { .awc-grid { grid-template-columns: 1fr; } }
+
+  /* Themed sections */
+  .themed { background: var(--bg); color: var(--fg); }
+
+  /* 05 Finding Hannah — colourful full width */
+  .fh-media { margin-top: 1.5rem; }
+  .fh-text { display: grid; grid-template-columns: 6fr 5fr; gap: var(--gutter); margin-top: 2.5rem; }
+  @media (max-width: 760px) { .fh-text { grid-template-columns: 1fr; } }
+
+  /* 06 Failing — intimate, portrait */
+  .fl-grid { display: grid; grid-template-columns: 4fr 7fr; gap: calc(var(--gutter) * 1.5); align-items: center; }
+  .fl-text h2 { margin-bottom: 1.5rem; }
+  .fl-media {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; align-items: end;
+  }
+  .fl-media :global(.fl-panel:nth-child(2)) { transform: translateY(-2.5rem); }
+  @media (max-width: 900px) {
+    .fl-grid { grid-template-columns: 1fr; }
+    .fl-media { grid-template-columns: 1fr 1fr; }
+    .fl-media :global(.fl-panel:nth-child(2)) { transform: none; }
+    .fl-media :global(.fl-video) { grid-column: 1 / -1; max-width: 420px; width: 100%; margin-inline: auto; }
+  }
+
+  /* 07 Other work — supplementary, quiet */
+  .other { padding-block: calc(var(--space-section) * 0.6); }
+  .other h2 { font-family: var(--sans); font-size: var(--fs-small); margin-bottom: 1rem; }
+  .other-item { display: grid; grid-template-columns: minmax(140px, 3fr) 8fr; gap: var(--gutter); align-items: center; padding-block: 1.75rem; }
+  .other-item h3 { font-size: 2rem; margin-bottom: 0.5rem; }
+  .other-item h3 a { text-decoration: none; }
+  .other-item h3 a:hover { text-decoration: underline; }
+  .other-year { font-family: var(--sans); font-size: var(--fs-small); color: var(--muted); margin-left: 0.4em; }
+  .other-item .credit { margin-top: 0.5rem; }
+  @media (max-width: 560px) { .other-item { grid-template-columns: 1fr; } .other-media { max-width: 260px; } }
+
+  /* 08 About */
+  .about { border-top: 1px solid var(--line); }
+  .about-grid { display: grid; grid-template-columns: 4fr 8fr; gap: var(--gutter); }
+  .about h2 { font-size: var(--fs-h2); }
+  .recog-title { margin-top: 3rem; font-family: var(--sans); }
+  .recog { list-style: none; padding: 0; margin: 1rem 0 0; max-width: 44rem; }
+  .recog li {
+    display: grid; grid-template-columns: 1fr auto auto; gap: 0.25rem 1.5rem;
+    padding: 0.9rem 0; border-top: 1px solid var(--line); font-size: 0.9375rem;
+  }
+  .recog li:last-child { border-bottom: 1px solid var(--line); }
+  .recog-award { font-weight: 500; }
+  .recog-note, .recog-year { color: var(--muted); }
+  @media (max-width: 760px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .recog li { grid-template-columns: 1fr auto; }
+    .recog-note { grid-row: 2; }
+  }
+</style>
