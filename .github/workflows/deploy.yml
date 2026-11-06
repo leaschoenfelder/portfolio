@@ -40,3 +40,5 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          timeout: 1200000 # 20 min; GitHub Pages is sometimes slow to switch over
