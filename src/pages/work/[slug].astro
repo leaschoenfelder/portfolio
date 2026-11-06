@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
 import Review from '../../components/Review.astro';
+import Stories from '../../components/Stories.astro';
 import { projects, getProject, visible, type Project, type Media as M } from '../../content/site';
 
 export function getStaticPaths() {
@@ -87,6 +88,15 @@ const description = `${p.title} (${p.year}) — ${p.question}`;
     </section>
 
     <!-- Galleries -->
+    {p.stories && (
+      <section class="wrap block stories-block" aria-labelledby="stories-h">
+        <h2 id="stories-h" class="block-label eyebrow">{p.stories.title}</h2>
+        <div class="block-body stories-body">
+          <Stories items={p.stories.items} hint={p.stories.hint} />
+        </div>
+      </section>
+    )}
+
     {galleries.map((g, i) => {
       const { videos, images } = splitGallery(g.items);
       return (
@@ -180,6 +190,7 @@ const description = `${p.title} (${p.year}) — ${p.question}`;
   .top + .block { border-top: 0; }
   .block-label { font-family: var(--sans); font-size: var(--fs-small); margin: 0.4rem 0 1.5rem; }
   .block-body { grid-column: 2; }
+  .stories-block .stories-body { grid-column: 1 / -1; min-width: 0; } /* five squares use the full width */
   .int-title { font-size: var(--fs-h3); margin-bottom: 1.5rem; }
   @media (max-width: 760px) {
     .block { grid-template-columns: 1fr; }

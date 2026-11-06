@@ -180,6 +180,11 @@ const fh = {
     'Early prototype, before the final visual language.', C.fh),
 };
 
+const story = (folder: number, title: string, alts: string[]): Story => ({
+  title,
+  frames: alts.map((alt, i) => img(`try-again/stories/s${folder}-${i + 1}.jpg`, 800, 800, alt)),
+});
+
 const ta = {
   garden: img('try-again/garden-finale.jpg', 1400, 1400,
     'Wildflowers growing through a line-grid garden, with the phrase “This isn’t a fail.”',
@@ -187,15 +192,47 @@ const ta = {
   calendar: img('try-again/calendar.jpg', 1400, 1400,
     'A fully coloured, overcrowded weekly calendar showing the actual outcome of a planned routine.',
     'A planned week, and what it actually became.', C.ta),
-  s1: [
-    img('try-again/story1-1.jpg', 1200, 1200, 'Title card reading “Fail #1”.'),
-    img('try-again/story1-2.jpg', 1200, 1200, 'An illustrated family scene with an angry couple and their sad daughter.'),
-    img('try-again/story1-3.jpg', 1200, 1200, 'Text panel: “I screamed at my husband. It made my daughter sad.”'),
-  ],
-  s6: [
-    img('try-again/story6-1.jpg', 1200, 1200, 'Text panel: “I’m late with gardening this year.”'),
-    img('try-again/story6-2.jpg', 1200, 1200, 'Text panel: “After weeks, wild flowers grow by themselves.”'),
-    img('try-again/story6-3.jpg', 1200, 1200, 'Text panel: “This isn’t a fail.”'),
+  /** Illustrated stories, one square each; frames in reading order (source folders 1, 2, 3, 4, 6). */
+  stories: [
+    story(1, 'Fail #1', [
+      'Title card: “Fail #1”.',
+      'An angry couple shouting, with their sad daughter in front of them.',
+      'Text panel: “I screamed at my husband. It made my daughter sad.”',
+    ]),
+    story(2, 'Fail #2', [
+      'Title card: “Fail #2”.',
+      'Text panel: “A woman cried bitterly on the subway. One should help.”',
+      'A pair of white earphones beside a crying woman on the subway.',
+      'Text panel: “When I finally took off my earphones, she was gone.”',
+    ]),
+    story(3, 'Fail #3', [
+      'Title card: “Fail #3”.',
+      'A frying pan with an egg and a slice of bacon, seen from above.',
+      'Text panel: “I threw out the non-stick pan.”',
+      'A black skull above the words “It’s not healthy”.',
+      'Text panel: “The new one is cast-iron.”',
+      'A cast-iron pan with burnt food.',
+      'Text panel: “Now I burn everything I cook.”',
+    ]),
+    story(4, 'Fail #4', [
+      'Title card: “Fail #4”.',
+      'Text panel: “How I wish my schedule looks:”',
+      'A sparse schedule with three entries: yoga, work and espresso with friends.',
+      'Text panel: “How my schedule looks:”',
+      'A schedule packed with blocks: drop off kid, meeting, focus time, lunch, call friend, important meeting, meeting and yoga.',
+    ]),
+    story(6, 'Fail #6', [
+      'Title card: “Fail #6”.',
+      'A garden bed with a few tiny sprouts.',
+      'Text panel: “I’m late with gardening this year.”',
+      'Two seedlings in small pots.',
+      'Text panel: “Someone gives me 2 tomatoes.”',
+      'Text panel: “I don’t plant them.” Below, the two seedlings wilting in their pots.',
+      'Text panel: “After weeks, wild flowers grow by themselves.”',
+      'White wild flowers growing out of the garden bed.',
+      'Text panel: “This isn’t a fail.”',
+      'Wildflowers growing through a line-grid garden.',
+    ]),
   ],
   gameplay: vid('try-again/gameplay.mp4', 1126, 2436, '0:29',
     'Portrait gameplay: start screen, a planned routine, a drawn line, the overcrowded calendar and a second solution.',
@@ -212,7 +249,7 @@ export const home = {
   intro:
     'I make games that explore what interaction can express, whose experiences games can represent, and who feels invited to play. My work moves between experimental performance, tactile puzzles and personal storytelling, using familiar and unfamiliar forms of play to explore human experience.',
   samplesLabel: 'View Selected Work Samples',
-  samplesSub: 'Approx. 6 minutes · Four works',
+  samplesSub: 'Four works',
   exploreLabel: 'Explore the work',
 
   openingMedia: {
@@ -252,6 +289,7 @@ export const home = {
 export interface ContextItem { label: string; detail?: string; href?: string }
 export interface LinkItem { label: string; href: string; external?: boolean }
 export interface Gallery { title: string; items: Media[] }
+export interface Story { title: string; frames: Media[] }
 
 export interface Project {
   slug: string;
@@ -276,6 +314,8 @@ export interface Project {
   work: string[];
   interaction: { title: string; text: string[]; media: Media[] };
   galleries?: Gallery[];
+  /** Click-through picture stories, shown in one row */
+  stories?: { title: string; hint: string; items: Story[] };
   contribution: string[];
   fullCredits?: string[];
   process: Media[];
@@ -461,7 +501,7 @@ export const projects: Project[] = [
       headline: 'Small failures. Playable stories.',
       caption:
         'An ongoing experiment in interactive storytelling, combining personal accounts of everyday imperfection with short illustrated narratives and accessible logic puzzles.',
-      media: [ta.s6[1], ta.s6[2], ta.gameplay],
+      media: [ta.stories[4].frames[6], ta.stories[4].frames[8], ta.gameplay],
     },
     hero: ta.gameplay,
     heroLayout: 'portrait',
@@ -477,10 +517,11 @@ export const projects: Project[] = [
       ],
       media: [ta.calendar, ta.garden],
     },
-    galleries: [
-      { title: 'Story 6: Late gardening', items: ta.s6 },
-      { title: 'Story 1', items: ta.s1 },
-    ],
+    stories: {
+      title: 'Stories',
+      hint: 'Click a story to step through it, one picture at a time.',
+      items: ta.stories,
+    },
     contribution: [
       'Try Again is my ongoing independent project. It is currently an experimental prototype, playable in the browser in English and German.',
     ],

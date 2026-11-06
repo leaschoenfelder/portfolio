@@ -257,6 +257,7 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
   }
   .pw-media > a { display: grid; grid-row: span 2; grid-template-rows: subgrid; }
   .pw-media :global(.media) { display: grid; grid-row: span 2; grid-template-rows: subgrid; align-items: end; }
+  .pw-media :global(figcaption), .fl-media :global(figcaption) { align-self: start; } /* captions share a top line */
   @media (max-width: 760px) {
     .pw-media { grid-template-columns: 1fr; row-gap: var(--img-gap); }
     .pw-media > :last-child { max-width: 320px; }

@@ -1,0 +1,102 @@
+---
+/**
+ * A row of picture stories. Each story is one square; clicking (or Enter/Space)
+ * shows the next picture, and after the last one it starts again.
+ * Without JavaScript the first picture of each story is shown.
+ */
+import type { Story } from '../content/site';
+
+interface Props { items: Story[]; hint?: string }
+const { items, hint } = Astro.props;
+---
+<div class="stories-wrap">
+  {hint && <p class="stories-hint">{hint}</p>}
+  <ol class="stories">
+    {items.map((s) => (
+      <li class="story" data-story data-title={s.title}>
+        <button type="button" class="story-btn" aria-label={`${s.title}, picture 1 of ${s.frames.length}: ${s.frames[0].alt} Next picture.`}>
+          {s.frames.map((f, i) => (
+            <img
+              src={f.src}
+              alt=""
+              data-alt={f.alt}
+              width="800"
+              height="800"
+              loading="lazy"
+              decoding="async"
+              hidden={i !== 0}
+            />
+          ))}
+        </button>
+        <div class="story-progress" aria-hidden="true">
+          {s.frames.map((_, i) => <span class:list={['dot', i === 0 && 'on']} />)}
+        </div>
+        <p class="visually-hidden" aria-live="polite" data-live></p>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-story]').forEach((story) => {
+    const btn = story.querySelector<HTMLButtonElement>('.story-btn')!;
+    const frames = [...btn.querySelectorAll<HTMLImageElement>('img')];
+    const dots = [...story.querySelectorAll<HTMLElement>('.dot')];
+    const live = story.querySelector<HTMLElement>('[data-live]')!;
+    const title = story.dataset.title;
+    const n = frames.length;
+    let i = 0;
+
+    // Fetch the following picture ahead of time so the next click feels instant
+    const warm = (k: number) => { if (frames[k] && !frames[k].dataset.warm) { frames[k].dataset.warm = '1'; new Image().src = frames[k].src; } };
+
+    const label = () => {
+      const alt = frames[i].dataset.alt;
+      const next = i === n - 1 ? 'Start again.' : 'Next picture.';
+      btn.setAttribute('aria-label', `${title}, picture ${i + 1} of ${n}: ${alt} ${next}`);
+    };
+
+    btn.addEventListener('pointerenter', () => warm(1), { once: true });
+    btn.addEventListener('focus', () => warm(1), { once: true });
+    btn.addEventListener('click', () => {
+      frames[i].hidden = true; dots[i].classList.remove('on');
+      i = (i + 1) % n;
+      frames[i].hidden = false; dots[i].classList.add('on');
+      warm(i + 1);
+      label();
+      live.textContent = `Picture ${i + 1} of ${n}: ${frames[i].dataset.alt}`;
+    });
+  });
+</script>
+
+<style>
+  .stories-hint { color: var(--muted); font-size: 0.9375rem; margin-bottom: 1.25rem; }
+  .stories {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--img-gap);
+  }
+  .story { min-width: 0; position: relative; } /* keeps the hidden announcer inside its story */
+  .story-btn {
+    display: block; width: 100%; aspect-ratio: 1; padding: 0; border: 0;
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    cursor: pointer; position: relative; overflow: hidden;
+  }
+  .story-btn img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .story-btn img[hidden] { display: none; }
+  .story-btn:hover img { opacity: 0.94; }
+  .story-progress { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 0.7rem; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); transition: background .15s; }
+  .dot.on { background: var(--fg); }
+
+  /* Phones and small tablets: one row that scrolls sideways */
+  @media (max-width: 900px) {
+    .stories {
+      grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 42%;
+      overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+      padding-bottom: 0.5rem; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter);
+      scroll-padding-inline: var(--gutter);
+    }
+    .story { scroll-snap-align: start; }
+  }
+  @media (max-width: 560px) { .stories { grid-auto-columns: 72%; } }
+</style>
