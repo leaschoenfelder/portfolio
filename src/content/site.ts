@@ -68,7 +68,7 @@ export const site = {
   email: 'lea@schoenfelder.co',
   year: 2026,
   description:
-    'Lea Schönfelder is an artist and game designer. Her work explores what interaction can express, whose experiences games can represent, and who feels invited to play.',
+    'Artist and game designer Lea Schönfelder explores what interaction can express, whose experiences games can represent, and who feels invited to play.',
   /** Social sharing image, 1200×630 recommended. */
   ogImage: '/media/perfect-woman/roles.jpg',
   tryAgainPrototype: 'https://leaschoenfelder.github.io/failing-play/',
@@ -119,6 +119,10 @@ const pw = {
     'Teaser combining a performer’s body poses with the game’s life-role scenes.',
     'Teaser.', 'Video: Steven Amrhein'),
   // 65 s montage from the 2014 gameplay recording (manifest: PerfectWoman_Gameplay_Montage_65s.mp4)
+  // Full 2:27 press-kit trailer, web copy (manifest: Trailer_web_1080p.mp4)
+  trailer: vid('perfect-woman/trailer.mp4', 1920, 1080, '2:27',
+    'The full trailer: an animated “Perfect Woman Life Simulator” sequence, then live-action Kinect performance, gameplay and later-life roles.',
+    'Trailer.'),
   gameplay: vid('perfect-woman/gameplay.mp4', 1920, 1080, '1:05',
     'Gameplay montage combining the “Super Talented Singer and Performer” and “Eager Student” choices, their pose-controlled performances and the consequences “great career”, “miss some fun” and “burn out at 45”.',
     'Gameplay montage: two life roles, from body pose to choice and consequence.'),
@@ -247,14 +251,14 @@ export const home = {
   /** Each array item is one line of the headline (deliberate line breaks). */
   headline: ['Expanding the', 'Language and', 'Audience of Games'],
   intro:
-    'I make games that explore what interaction can express, whose experiences games can represent, and who feels invited to play. My work moves between experimental performance, tactile puzzles and personal storytelling, using familiar and unfamiliar forms of play to explore human experience.',
+    'Lea Schönfelder makes games that explore what interaction can express, whose experiences games can represent, and who feels invited to play. The work moves between experimental performance, tactile puzzles and personal storytelling, using familiar and unfamiliar forms of play to explore human experience.',
   samplesLabel: 'View Selected Work Samples',
   samplesSub: 'Four works',
   exploreLabel: 'Explore the work',
 
   openingMedia: {
     perfectWoman: { ...pw.heroPhoto, caption: 'Perfect Woman, 2014', credit: undefined },
-    tryAgain: { ...ta.garden, caption: 'Try Again, ongoing', credit: undefined },
+    tryAgain: { ...ta.stories[4].frames[7], caption: 'Try Again, ongoing', credit: undefined },
   },
 
   inquiry: [
@@ -268,31 +272,24 @@ export const home = {
     },
   ],
   inquiryBridge:
-    'Experimentation and accessibility are not opposites. Their relationship is one of the central questions of my practice.',
+    'Experimentation and accessibility are not opposites. Their relationship is one of the central questions of Schönfelder’s practice.',
 
   bio: [
-    'Lea Schönfelder is a German artist and game designer whose work explores games as a medium for personal, emotional and social expression. Her practice spans independent experimental games, internationally recognised interactive works and interdisciplinary creative collaborations.',
-    'Her projects include Perfect Woman, Monument Valley 2, Assemble with Care and Finding Hannah. She co-founded the independent studio Fein Games and continues to explore new approaches to interactive storytelling through her ongoing work Try Again.',
+    'Lea Schönfelder is a German artist and game designer whose work explores games as a medium for personal, emotional and social expression. The practice spans independent experimental games, internationally recognised interactive works and interdisciplinary creative collaborations.',
+    'Projects include Perfect Woman, Monument Valley 2, Assemble with Care and Finding Hannah. As co-founder of the independent studio Fein Games, Schönfelder continues to explore new approaches to interactive storytelling, most recently in the ongoing work Try Again.',
   ],
-  /** Full list, newest first, as supplied by Lea Schönfelder. */
+  /** Wins and distinctions, newest first, as supplied by Lea Schönfelder (nominations left out on request). */
   recognition: [
     { award: 'Apple App Store Award, Cultural Impact', year: '2023', note: 'Finding Hannah' },
     { award: 'Apple Design Award Finalist, Inclusion', year: '2023', note: 'Finding Hannah' },
-    { award: 'Deutscher Computerspielpreis, nomination for Best Graphic Design', year: '2023', note: 'Finding Hannah' },
-    { award: 'A MAZE. Diversity Award nomination', year: '2023', note: 'Finding Hannah' },
     { award: 'BAFTA Breakthrough UK', year: '2020', note: 'Personal distinction' },
-    { award: 'BAFTA Games Award nomination, EE Mobile Game of the Year', year: '2020', note: 'Assemble with Care' },
     { award: 'Kultur- und Kreativpilot*innen Deutschland', year: '2020', note: 'Fein Games' },
     { award: 'Italian Video Game Awards, Best Mobile Game', year: '2018', note: 'Monument Valley 2' },
-    { award: 'BAFTA Games Awards nominations, Best British Game and Best Family Game', year: '2018', note: 'Monument Valley 2' },
     { award: 'Webby Award, Games – Puzzle', year: '2018', note: 'Monument Valley 2' },
     { award: 'The Game Awards, Best Mobile Game', year: '2017', note: 'Monument Valley 2' },
     { award: 'Unity Awards, Best Mobile Game', year: '2017', note: 'Monument Valley 2' },
     { award: 'IMGA China, Best Overseas Game of the Year', year: '2017', note: 'Monument Valley 2' },
     { award: 'A MAZE. Most Amazing Game Award', year: '2014', note: 'Perfect Woman' },
-    { award: 'Independent Games Festival, Nuovo Award nomination', year: '2014', note: 'Perfect Woman' },
-    { award: 'German Design Council, Newcomer nomination', year: '2013', note: 'Personal distinction' },
-    { award: 'IndieCade nomination', year: '2013', note: 'Perfect Woman' },
     { award: 'Art Directors Club, Bronze Award', year: '2011', note: 'Ute' },
     { award: 'Independent Games Festival, Honourable Mention', year: '2011', note: 'Ute' },
     { award: 'Red Dot Design Award', year: '2011', note: 'Ulitsa Dimitrova' },
@@ -382,10 +379,10 @@ export const projects: Project[] = [
       media: [pw.gameplay, pw.choice, pw.performance],
     },
     galleries: [
-      { title: 'From the game', items: [pw.teaser, pw.roles, pw.academic, pw.underworld, pw.grandmother] },
+      { title: 'From the game', items: [pw.trailer, pw.roles, pw.academic, pw.underworld, pw.grandmother] },
     ],
     contribution: [
-      'I conceived Perfect Woman and was responsible for its concept, art and game design. Peter Lu programmed the game and shaped its game design with me.',
+      'Perfect Woman was conceived by Lea Schönfelder, who was responsible for its concept, art and game design. Peter Lu programmed the game and shaped its game design together with Schönfelder.',
     ],
     fullCredits: [
       'Concept, Art and Game Design: Lea Schönfelder',
@@ -437,13 +434,12 @@ export const projects: Project[] = [
     },
     galleries: [{ title: 'Trailer', items: [awc.trailer] }],
     contribution: [
-      'As lead game designer, I led the design and development team of Assemble with Care. The game is a ustwo games production, made by the whole studio team.',
+      'As lead game designer, Lea Schönfelder led the design and development team of Assemble with Care. The game is a ustwo games production, made by the whole studio team.',
     ],
     fullCredits: ['A ustwo games production', 'Lead Game Designer: Lea Schönfelder', '© ustwo games'],
     process: [awc.storyboard, awc.selma, awc.ada, awc.carl],
     context: [
       { label: 'Apple Arcade launch title', detail: '2019' },
-      { label: 'BAFTA Games Award nomination', detail: 'For the game' },
     ],
     links: [],
     next: 'finding-hannah',
@@ -485,7 +481,7 @@ export const projects: Project[] = [
       { title: 'Scenes', items: [fh.trailer, fh.cafe, fh.club, fh.desk, fh.wartime, fh.books, fh.courtyard] },
     ],
     contribution: [
-      'As co-founder and co-CEO of Fein Games, I was creative director of Finding Hannah and led its creative, production and business direction. The game was made by the Fein Games team; its art is by Elena Resko and Bien Tran.',
+      'As co-founder and co-CEO of Fein Games, Lea Schönfelder was creative director of Finding Hannah and led its creative, production and business direction. The game was made by the Fein Games team; its art is by Elena Resko and Bien Tran.',
     ],
     fullCredits: [
       'A Fein Games production',
@@ -542,7 +538,7 @@ export const projects: Project[] = [
       items: ta.stories,
     },
     contribution: [
-      'Try Again is my ongoing independent project. It is currently an experimental prototype, playable in the browser in English and German.',
+      'Try Again is Lea Schönfelder’s ongoing independent project. It is currently an experimental prototype, playable in the browser in English and German.',
     ],
     fullCredits: ['Try Again, 2026. © Lea Schönfelder'],
     process: [],
@@ -583,7 +579,7 @@ export const projects: Project[] = [
       media: [placeholder('monument-valley-2', 'gameplay', 'video', '16 / 9', 'Relevant gameplay or level-design sequence')],
     },
     contribution: [
-      'As senior game designer, I was involved in prototyping, interaction design and level design.',
+      'As senior game designer, Lea Schönfelder was involved in prototyping, interaction design and level design.',
       'Monument Valley 2 was created by the team at ustwo games. Its visual style, narrative and overall design are the work of many people.',
     ],
     process: [],

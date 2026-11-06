@@ -200,9 +200,9 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
     column-gap: var(--gutter); align-items: center;
   }
   .opening-text { grid-column: 1 / 8; }
-  .opening h1 { font-size: var(--fs-hero); margin: 1rem 0 1.75rem; }
+  .opening h1 { font-size: clamp(2.3rem, 4.6vw, 4.9rem); margin: 1rem 0 1.75rem; font-weight: 700; } /* bold runs wider */
   .opening h1 .line { display: block; }
-  .opening h1 .line:nth-child(2) { padding-left: 0.6em; font-weight: 200; }
+  .opening h1 .line:nth-child(2) { padding-left: 0.6em; }
   .opening .lede { max-width: 34rem; }
   .opening-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 2rem; margin-top: 2.25rem; }
   .cta-primary {
