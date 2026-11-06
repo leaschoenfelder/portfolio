@@ -11,6 +11,7 @@ const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = site.ogImage ? new URL(site.ogImage, Astro.site).href : undefined;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const page = path === '/' ? 'home' : path === '/samples' ? 'samples' : path.startsWith('/work/') ? 'work' : 'other';
 ---
 <!doctype html>
 <html lang="en">
@@ -37,7 +38,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
     />
   </head>
-  <body>
+  <body data-page={page}>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="wrap">

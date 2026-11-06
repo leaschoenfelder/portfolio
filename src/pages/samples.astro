@@ -74,9 +74,9 @@ const isPortrait = (aspect: string) => {
     display: grid; grid-template-columns: 2.5rem 1fr auto; gap: 1rem;
     padding: 0.85rem 0; text-decoration: none; align-items: baseline;
   }
-  .index a:hover .idx-title { color: var(--accent); }
+  .index a:hover .idx-title { text-decoration: underline; text-decoration-thickness: 2px; }
   .idx-n, .idx-year { color: var(--muted); font-size: 0.875rem; }
-  .idx-title { font-family: var(--display); font-size: 1.5rem; line-height: 1.1; }
+  .idx-title { font-family: var(--display); font-size: 1.5rem; line-height: 1.1; color: var(--head); }
   .index li:last-child { border-bottom: 1px solid var(--line); }
 
   .sample {

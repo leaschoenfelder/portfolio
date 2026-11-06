@@ -500,7 +500,6 @@ export const projects: Project[] = [
       { label: 'Apple Design Award finalist, Inclusion', detail: '2023' },
     ],
     links: [],
-    theme: { bg: '#E9DDCB', fg: '#1C1B19', muted: '#5F5A52', line: '#CDBFA9' },
     next: 'try-again',
   },
 
@@ -552,7 +551,6 @@ export const projects: Project[] = [
       { label: 'Seven illustrated stories so far' },
     ],
     links: [{ label: 'Play the Prototype', href: site.tryAgainPrototype, external: true }],
-    theme: { bg: '#EFE3D2', fg: '#1C1B19', muted: '#635D55', line: '#D6C6B0' },
     next: 'monument-valley-2',
   },
 

@@ -2,11 +2,17 @@
    Design tokens
    ========================================================================== */
 :root {
-  --bg: #F5F2EC;
-  --fg: #1C1B19;
-  --muted: #706D68;
-  --line: #D8D3CB;
-  --accent: #B8493D;
+  --bg: #FFFFFF;
+  --fg: #111111;
+  --muted: #666666;
+  --line: #E3E3E3;
+
+  /* Page colours: pink for the home page, blue for Work Samples, yellow for project pages */
+  --pink: #FF2F92;
+  --blue: #0433FF;
+  --yellow: #FFBD4C;
+  --accent: var(--fg);
+  --head: var(--fg);
 
   /* Headlines: Lea Block (Lea Schönfelder's own typeface). Arrows fall back to Plex Sans. */
   --display: 'Lea Block', 'IBM Plex Sans', system-ui, sans-serif;
@@ -62,7 +68,13 @@ body {
 
 img, video, iframe { display: block; max-width: 100%; }
 
+/* Each page type has one colour, used for headlines and divider lines */
+body[data-page="home"] { --head: var(--pink); --accent: var(--pink); --line: var(--pink); }
+body[data-page="samples"] { --head: var(--blue); --accent: var(--blue); --line: var(--blue); }
+body[data-page="work"] { --head: var(--yellow); --accent: var(--fg); --line: var(--yellow); }
+
 h1, h2, h3, h4 {
+  color: var(--head);
   font-family: var(--display);
   font-weight: 400;
   line-height: 1.1;
