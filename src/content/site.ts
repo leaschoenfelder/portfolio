@@ -118,9 +118,10 @@ const pw = {
   teaser: vid('perfect-woman/teaser.mp4', 1280, 720, '0:31',
     'Teaser combining a performer’s body poses with the game’s life-role scenes.',
     'Teaser.', 'Video: Steven Amrhein'),
-  gameplay: vid('perfect-woman/gameplay.mp4', 1280, 720, '3:17',
-    'Unedited gameplay showing the sequence from body pose to choice and consequence.',
-    'Gameplay recording, from body pose to choice and consequence.'),
+  // 65 s montage from the 2014 gameplay recording (manifest: PerfectWoman_Gameplay_Montage_65s.mp4)
+  gameplay: vid('perfect-woman/gameplay.mp4', 1920, 1080, '1:05',
+    'Gameplay montage combining the “Super Talented Singer and Performer” and “Eager Student” choices, their pose-controlled performances and the consequences “great career”, “miss some fun” and “burn out at 45”.',
+    'Gameplay montage: two life roles, from body pose to choice and consequence.'),
 };
 
 const awc = {
@@ -211,7 +212,7 @@ export const home = {
   intro:
     'I make games that explore what interaction can express, whose experiences games can represent, and who feels invited to play. My work moves between experimental performance, tactile puzzles and personal storytelling, using familiar and unfamiliar forms of play to explore human experience.',
   samplesLabel: 'View Selected Work Samples',
-  samplesSub: 'Approx. 8 minutes · Four works',
+  samplesSub: 'Approx. 6 minutes · Four works',
   exploreLabel: 'Explore the work',
 
   openingMedia: {
