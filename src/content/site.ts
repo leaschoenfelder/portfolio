@@ -243,6 +243,19 @@ const ta = {
     'Gameplay recording on a phone.', C.ta),
 };
 
+const mv = {
+  hero: img('monument-valley-2/hero.jpg', 1499, 2000,
+    'Three floating castle islands in pink, yellow and turquoise against a pale peach sky; the small figures of the mother and child stand in separate towers.',
+    'Islands of impossible architecture.', '© ustwo games'),
+  dusk: img('monument-valley-2/dusk.jpg', 1499, 2000,
+    'Mother and child on a bridge of a monumental purple structure at dusk, a large red sun behind the domed towers.',
+    'Mother and child at dusk.', '© ustwo games'),
+  // manifest: process/Child Mandala-10276.mov, turned upright (source was recorded sideways)
+  mandala: vid('monument-valley-2/child-mandala.mp4', 960, 1280, '0:51',
+    'A mother–child puzzle: the child traces a luminous circular mandala, which travels back into the patterned architecture, moves the structure and completes the level.',
+    'The child’s mandala completes the level.', '© ustwo games'),
+};
+
 /* --------------------------------------------------------------------------
    Homepage copy
    -------------------------------------------------------------------------- */
@@ -322,7 +335,7 @@ export interface Project {
   status?: string;
   question: string;
 
-  home?: { headline: string; caption: string; media: Media[] };
+  home?: { headline: string; caption: string; media: Media[]; /** click-through stories shown before the media */ stories?: Story[] };
 
   hero: Media;
   /** 'wide' = full-width hero; 'portrait' = vertical media next to the text */
@@ -515,7 +528,8 @@ export const projects: Project[] = [
       headline: 'Small failures. Playable stories.',
       caption:
         'An ongoing experiment in interactive storytelling, combining personal accounts of everyday imperfection with short illustrated narratives and accessible logic puzzles.',
-      media: [ta.stories[4].frames[6], ta.stories[4].frames[8], ta.gameplay],
+      stories: [ta.stories[0], ta.stories[4]], // Fail #1 and Fail #6
+      media: [ta.gameplay],
     },
     hero: ta.gameplay,
     heroLayout: 'portrait',
@@ -534,7 +548,8 @@ export const projects: Project[] = [
     stories: {
       title: 'Mini-comics',
       hint: 'Mini-comics published on Instagram. They are not part of the playable prototype. Click a story to step through it, one picture at a time.',
-      items: ta.stories,
+      // Fail #2, #3 and #4 only
+      items: ta.stories.slice(1, 4),
     },
     contribution: [
       'Try Again is Lea Schönfelder’s ongoing independent project. It is currently an experimental prototype, playable in the browser in English and German.',
@@ -563,10 +578,10 @@ export const projects: Project[] = [
     home: {
       headline: 'Monument Valley 2',
       caption: 'Exploring how spatial interaction can express the relationship between a mother and child.',
-      media: [placeholder('monument-valley-2', 'thumb', 'image', '4 / 3', 'Small image of mother and child in the game')],
+      media: [mv.dusk],
     },
-    hero: placeholder('monument-valley-2', 'hero', 'image', '16 / 9', 'Hero: one strong image'),
-    heroLayout: 'wide',
+    hero: mv.hero,
+    heroLayout: 'portrait',
     work: [
       'Monument Valley 2 follows a mother and her child through a world of impossible architecture. Their relationship is expressed through space: how the two characters move together, apart and towards each other as the levels unfold.',
     ],
@@ -575,10 +590,10 @@ export const projects: Project[] = [
       text: [
         'Level design and interaction carry the story. Guiding two characters through the same architecture lets the relationship between them become something the player navigates directly.',
       ],
-      media: [placeholder('monument-valley-2', 'gameplay', 'video', '16 / 9', 'Relevant gameplay or level-design sequence')],
+      media: [mv.mandala],
     },
     contribution: [
-      'As senior game designer, Lea Schönfelder was involved in prototyping, interaction design and level design.',
+      'As senior game designer, Lea Schönfelder was involved in prototyping, interaction design and level design. Together with a programmer, Schönfelder co-developed the mechanic that expresses the relationship between mother and child.',
       'Monument Valley 2 was created by the team at ustwo games. Its visual style, narrative and overall design are the work of many people.',
     ],
     process: [],

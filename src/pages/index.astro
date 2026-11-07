@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
+import Stories from '../components/Stories.astro';
 import Review from '../components/Review.astro';
 import { home, getProject, site, visible } from '../content/site';
 
@@ -136,9 +137,8 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
           </div>
         </div>
         <div class="fl-media">
-          <Media media={fl.home!.media[0]} class="fl-panel" />
-          <Media media={fl.home!.media[1]} class="fl-panel" />
-          <Media media={fl.home!.media[2]} class="fl-video" />
+          <div class="fl-stories"><Stories items={fl.home!.stories!} fixed /></div>
+          <Media media={fl.home!.media[0]} class="fl-video" />
         </div>
       </div>
     </section>
@@ -290,6 +290,13 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
     column-gap: var(--img-gap); align-items: end;
   }
   .fl-media :global(.media) { display: grid; grid-row: span 2; grid-template-rows: subgrid; align-items: end; }
+  /* The two click-through stories fill two columns; their frames share the video's bottom line, dots sit in the caption row */
+  .fl-stories, .fl-stories :global(.stories-wrap), .fl-stories :global(.story) {
+    display: grid; grid-row: span 2; grid-template-rows: subgrid; align-items: end;
+  }
+  .fl-stories { grid-column: span 2; }
+  .fl-stories :global(.stories) { grid-row: span 2; grid-template-rows: subgrid; align-items: end; row-gap: 0; }
+  .fl-stories :global(.story-progress) { align-self: start; }
   @media (max-width: 900px) {
     .fl-grid { grid-template-columns: 1fr; }
     .fl-media { grid-template-columns: 1fr 1fr; row-gap: var(--img-gap); }

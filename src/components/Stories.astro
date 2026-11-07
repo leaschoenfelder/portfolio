@@ -6,12 +6,12 @@
  */
 import type { Story } from '../content/site';
 
-interface Props { items: Story[]; hint?: string }
-const { items, hint } = Astro.props;
+interface Props { items: Story[]; hint?: string; /** keep the grid on phones instead of a sideways-scrolling row */ fixed?: boolean }
+const { items, hint, fixed = false } = Astro.props;
 ---
 <div class="stories-wrap">
   {hint && <p class="stories-hint">{hint}</p>}
-  <ol class="stories">
+  <ol class:list={['stories', fixed && 'fixed']} style={`--n: ${items.length}`}>
     {items.map((s) => (
       <li class="story" data-story data-title={s.title}>
         <button type="button" class="story-btn" aria-label={`${s.title}, picture 1 of ${s.frames.length}: ${s.frames[0].alt} Next picture.`}>
@@ -73,7 +73,7 @@ const { items, hint } = Astro.props;
   .stories-hint { color: var(--muted); font-size: 0.9375rem; margin-bottom: 1.25rem; }
   .stories {
     list-style: none; margin: 0; padding: 0;
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--img-gap);
+    display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); gap: var(--img-gap);
   }
   .story { min-width: 0; position: relative; } /* keeps the hidden announcer inside its story */
   .story-btn {
@@ -88,15 +88,14 @@ const { items, hint } = Astro.props;
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); transition: background .15s; }
   .dot.on { background: var(--fg); }
 
-  /* Phones and small tablets: one row that scrolls sideways */
-  @media (max-width: 900px) {
-    .stories {
-      grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 42%;
+  /* Phones: one row that scrolls sideways, one large story at a time */
+  @media (max-width: 560px) {
+    .stories:not(.fixed) {
+      grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 82%;
       overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
       padding-bottom: 0.5rem; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter);
       scroll-padding-inline: var(--gutter);
     }
     .story { scroll-snap-align: start; }
   }
-  @media (max-width: 560px) { .stories { grid-auto-columns: 72%; } }
 </style>
