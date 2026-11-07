@@ -254,6 +254,10 @@ const mv = {
   mandala: vid('monument-valley-2/child-mandala.mp4', 960, 1280, '0:51',
     'A mother–child puzzle: the child traces a luminous circular mandala, which travels back into the patterned architecture, moves the structure and completes the level.',
     'The child’s mandala completes the level.', '© ustwo games'),
+  // manifest: video/MV2_Trailer_4k_60fps_Apple-10267.mp4, web copy at 1080p
+  trailer: vid('monument-valley-2/trailer.mp4', 1920, 1080, '1:00',
+    'A one-minute trailer moving through the game’s chapters and impossible architectures, following the mother and child on their journey.',
+    'Trailer.', '© ustwo games'),
 };
 
 /* --------------------------------------------------------------------------
@@ -592,6 +596,7 @@ export const projects: Project[] = [
       ],
       media: [mv.mandala],
     },
+    galleries: [{ title: 'Trailer', items: [mv.trailer] }],
     contribution: [
       'As senior game designer, Lea Schönfelder was involved in prototyping, interaction design and level design. Together with a programmer, Schönfelder co-developed the mechanic that expresses the relationship between mother and child.',
       'Monument Valley 2 was created by the team at ustwo games. Its visual style, narrative and overall design are the work of many people.',
