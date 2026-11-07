@@ -24,7 +24,7 @@ const splitGallery = (items: M[]) => ({ videos: items.filter((m) => m.kind !== '
 const themeStyle = p.theme
   ? `--bg:${p.theme.bg};--fg:${p.theme.fg};--muted:${p.theme.muted};--line:${p.theme.line}`
   : '';
-const description = `${p.title} (${p.year}) — ${p.question}`;
+const description = `${p.title}, ${p.year} — ${p.question}`;
 ---
 <Base title={p.title} description={description}>
   <article class:list={['project', `layout-${p.heroLayout}`, !p.principal && 'supplementary']}>
@@ -37,7 +37,6 @@ const description = `${p.title} (${p.year}) — ${p.question}`;
           <span>{p.year}</span>
         </p>
         <h1>{p.title}</h1>
-        {p.status && <p class="status"><span class="status-tag">{p.status}</span></p>}
         <dl class="facts">
           <div><dt>Year</dt><dd>{p.year}</dd></div>
           <div><dt>Format</dt><dd>{p.medium}</dd></div>
@@ -165,7 +164,6 @@ const description = `${p.title} (${p.year}) — ${p.question}`;
 
   .p-head { padding-top: clamp(3rem, 8vw, 6rem); }
   .p-head h1 { font-size: var(--fs-hero); margin: 1rem 0 1.5rem; }
-  .status { margin-bottom: 1.5rem; }
 
   .facts {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem var(--gutter);

@@ -505,12 +505,11 @@ export const projects: Project[] = [
     principal: true,
     number: '04',
     title: 'Try Again',
-    year: '2026',
+    year: '2026 (ongoing)',
     medium: 'Illustrated stories and line puzzles, browser prototype',
     role: 'Independent work',
     collaborators: 'Independent project',
     creditShort: 'Try Again, 2026. © Lea Schönfelder',
-    status: 'Ongoing · prototype',
     question: 'What happens when everyday failure becomes the starting point for a playful story?',
     home: {
       headline: 'Small failures. Playable stories.',
