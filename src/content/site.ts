@@ -532,8 +532,8 @@ export const projects: Project[] = [
       media: [ta.calendar, ta.garden],
     },
     stories: {
-      title: 'Stories',
-      hint: 'Click a story to step through it, one picture at a time.',
+      title: 'Mini-comics',
+      hint: 'Mini-comics published on Instagram. They are not part of the playable prototype. Click a story to step through it, one picture at a time.',
       items: ta.stories,
     },
     contribution: [
