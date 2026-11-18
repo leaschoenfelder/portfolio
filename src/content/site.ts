@@ -567,7 +567,7 @@ export const projects: Project[] = [
       { label: 'Ongoing prototype', detail: 'Playable in the browser, English and German' },
       { label: 'Seven illustrated stories so far' },
     ],
-    links: [{ label: 'Play the Prototype', href: site.tryAgainPrototype, external: true }],
+    links: [{ label: 'Play the Prototype (WIP)', href: site.tryAgainPrototype, external: true }],
     next: 'monument-valley-2',
   },
 
