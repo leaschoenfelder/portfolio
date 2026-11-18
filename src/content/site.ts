@@ -379,7 +379,7 @@ export const projects: Project[] = [
     creditShort: C.pw,
     question: 'What does it take to perform a perfect life?',
     home: {
-      headline: 'When social expectations become physical performance.',
+      headline: 'The perfect life is impossible to perform.',
       caption:
         'A dancing game that turns the dilemma of a perfect life into a physical challenge.',
       media: [pw.roles, pw.exhibition],
