@@ -377,7 +377,7 @@ export const projects: Project[] = [
     role: 'Concept, Art and Game Design',
     collaborators: 'Peter Lu (Programming and Game Design)',
     creditShort: C.pw,
-    question: 'What does it take to perform a perfect life?',
+    question: 'Can you perform a perfect life?',
     home: {
       headline: 'The perfect life is impossible to perform.',
       caption:
