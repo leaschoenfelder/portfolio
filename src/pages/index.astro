@@ -221,10 +221,10 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
     display: flex; flex-direction: column; align-items: flex-end; gap: var(--img-gap);
   }
   .art-pw { display: block; width: 100%; position: relative; }
-  .art-fl { display: block; width: 40%; } /* portrait phone screen */
+  .art-fl { display: block; width: 66.667%; } /* two thirds of the Perfect Woman photo */
   .opening-art a { text-decoration: none; }
   /* Perfect Woman caption sits left, beside the Try Again picture, so the two can sit close */
-  .art-pw :global(figcaption) { position: absolute; top: 100%; left: 0; max-width: calc(60% - var(--img-gap) * 2); }
+  .art-pw :global(figcaption) { position: absolute; top: 100%; left: 0; max-width: calc(33.333% - var(--img-gap) * 2); }
   .art-fl :global(figcaption) { text-align: right; }
 
   @media (max-width: 900px) {
