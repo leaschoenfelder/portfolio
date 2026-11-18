@@ -462,6 +462,7 @@ export const projects: Project[] = [
     process: [awc.storyboard, awc.selma, awc.ada, awc.carl],
     context: [
       { label: 'Apple Arcade launch title', detail: '2019' },
+      { label: 'BAFTA Games Award nomination, EE Mobile Game of the Year', detail: '2020' },
     ],
     links: [],
     next: 'finding-hannah',
