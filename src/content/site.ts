@@ -413,8 +413,10 @@ export const projects: Project[] = [
     ],
     process: [pw.concept, pw.exhibition, pw.storyboard],
     context: [
-      { label: 'A MAZE. Most Amazing Game Award', detail: '2014' },
-      { label: 'Exhibited internationally, including Digifest 2015' },
+      { label: 'A MAZE., Most Amazing Game Award', detail: '2014' },
+      { label: 'Independent Games Festival, Nuovo Award nomination', detail: '2014' },
+      { label: 'IndieCade, nomination', detail: '2013' },
+      { label: 'Exhibited internationally', detail: 'Permanent exhibition at ZKM' },
     ],
     links: [],
     next: 'assemble-with-care',
