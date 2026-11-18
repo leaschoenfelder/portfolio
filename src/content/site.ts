@@ -651,7 +651,7 @@ export const samples = {
     },
     {
       slug: 'try-again',
-      framing: 'Personal stories of everyday failure, told through illustrations and small line puzzles.',
+      framing: 'Personal stories of everyday failure, told through illustrations and crossword-style line puzzles.',
       role: 'Ongoing independent work · prototype',
       clips: [ta.gameplay],
       comics: { label: 'Fail #1, a mini-comic', items: ta.stories[0].frames },
