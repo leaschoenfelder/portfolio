@@ -381,7 +381,7 @@ export const projects: Project[] = [
     home: {
       headline: 'When social expectations become physical performance.',
       caption:
-        'A movement-based game that turns the pressure to live a perfect life into a physical challenge.',
+        'A dancing game that turns the dilemma of a perfect life into a physical challenge.',
       media: [pw.roles, pw.exhibition],
     },
     hero: pw.heroPhoto,
