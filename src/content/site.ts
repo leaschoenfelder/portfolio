@@ -433,7 +433,7 @@ export const projects: Project[] = [
     creditShort: 'Lead Game Designer, ustwo games',
     question: 'Can the act of repairing something become a way to explore emotional relationships?',
     home: {
-      headline: 'Repairing objects. Reconnecting people.',
+      headline: 'Repairing objects. Repairing relationships.',
       caption:
         'An exploration of how tactile interactions can become metaphors for care, memory and emotional repair.',
       media: [awc.hero],
