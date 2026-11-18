@@ -628,8 +628,8 @@ export interface Sample {
 
 export const samples = {
   headline: 'Selected Work Samples',
-  sub: 'Four works exploring interaction as artistic expression, from embodied performance and emotional mechanics to accessible storytelling and contemporary experiments.',
-  note: 'Curated selection for the KHM Expanded Gaming professorship application, 2026.',
+  sub: 'Four works exploring interaction as artistic expression, from embodied performance and metaphorical mechanics to accessible storytelling and interactive comic-strips.',
+  note: 'Curated selection of artistic work.',
   items: [
     {
       slug: 'perfect-woman',

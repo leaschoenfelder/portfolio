@@ -1,4 +1,5 @@
 ---
+import { it } from '../content/titles';
 import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
 import Review from '../components/Review.astro';
@@ -39,8 +40,8 @@ const isPortrait = (aspect: string) => {
       <div class="sample-info">
         <p class="meta"><span>{s.n}</span></p>
         <h2 id={`t-${s.slug}`}>{s.project.title} <span class="s-year">{s.project.year}</span></h2>
-        <p>{s.framing}</p>
-        <p class="credit">{s.role}</p>
+        <p set:html={it(s.framing)} />
+        <p class="credit" set:html={it(s.role)} />
         <a class="link-arrow" href={`/work/${s.slug}`}>Full project page</a>
         {s.slug === 'try-again' && (
           <p class="optional">
@@ -68,7 +69,7 @@ const isPortrait = (aspect: string) => {
           </div>
         </div>
       )}
-      {s.comics && s.clips[0]?.credit && <p class="sample-credit">{s.clips[0].credit}</p>}
+      {s.comics && s.clips[0]?.credit && <p class="sample-credit" set:html={it(s.clips[0].credit)} />}
     </section>
   ))}
 </Base>

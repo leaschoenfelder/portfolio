@@ -1,4 +1,5 @@
 ---
+import { it } from '../content/titles';
 /**
  * Renders one media entry from src/content/site.ts.
  * An entry without `src` shows as a labelled placeholder in the local preview
@@ -47,8 +48,8 @@ const hasCaption = caption && (media.caption || media.credit);
     </div>
     {hasCaption && (
       <figcaption>
-        {media.caption}
-        {media.credit && <span class="fig-credit">{media.credit}</span>}
+        <Fragment set:html={it(media.caption)} />
+        {media.credit && <span class="fig-credit" set:html={it(media.credit)} />}
       </figcaption>
     )}
     {media.fallbackUrl && !isPlaceholder && (

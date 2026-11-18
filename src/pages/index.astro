@@ -1,4 +1,5 @@
 ---
+import { it } from '../content/titles';
 import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
 import Stories from '../components/Stories.astro';
@@ -34,7 +35,7 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
         <h1 id="opening-title">
           {home.headline.map((line) => <span class="line">{line}</span>)}
         </h1>
-        <p class="lede">{home.intro}</p>
+        <p class="lede" set:html={it(home.intro)} />
         <div class="opening-cta">
           <a class="cta-primary" href="/samples">
             <span class="cta-label">{home.samplesLabel}</span>
@@ -63,11 +64,11 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
           <div class="inquiry-item">
             <p class="eyebrow">0{i + 1}</p>
             <h3>{q.title}</h3>
-            <p class="inquiry-q">{q.text}</p>
+            <p class="inquiry-q" set:html={it(q.text)} />
           </div>
         ))}
       </div>
-      <p class="inquiry-bridge">{home.inquiryBridge}</p>
+      <p class="inquiry-bridge" set:html={it(home.inquiryBridge)} />
       <Review id="home" />
     </div>
   </section>
@@ -86,8 +87,8 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
             <h2 id="pw-title">{pw.home!.headline}</h2>
           </div>
           <div>
-            <p>{pw.home!.caption}</p>
-            <p class="credit">{pw.creditShort}</p>
+            <p set:html={it(pw.home!.caption)} />
+            <p class="credit" set:html={it(pw.creditShort)} />
             <a class="link-arrow" href={`/work/${pw.slug}`}>Explore {pw.title}</a>
           </div>
         </div>
@@ -101,8 +102,8 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
         <div class="awc-text">
           <p class="meta"><span>{awc.number}</span><span>{awc.title}</span><span>{awc.year}</span></p>
           <h2 id="awc-title">{awc.home!.headline}</h2>
-          <p>{awc.home!.caption}</p>
-          <p class="credit">{awc.creditShort}</p>
+          <p set:html={it(awc.home!.caption)} />
+          <p class="credit" set:html={it(awc.creditShort)} />
           <a class="link-arrow" href={`/work/${awc.slug}`}>Explore {awc.title}</a>
         </div>
       </div>
@@ -116,8 +117,8 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
         <div class="fh-text">
           <h2 id="fh-title">{fh.home!.headline}</h2>
           <div>
-            <p>{fh.home!.caption}</p>
-            <p class="credit">{fh.creditShort}</p>
+            <p set:html={it(fh.home!.caption)} />
+            <p class="credit" set:html={it(fh.creditShort)} />
             <a class="link-arrow" href={`/work/${fh.slug}`}>Explore {fh.title}</a>
           </div>
         </div>
@@ -130,7 +131,7 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
         <div class="fl-text">
           <p class="meta"><span>{fl.number}</span><span>{fl.title}</span><span>{fl.year}</span></p>
           <h2 id="fl-title">{fl.home!.headline}</h2>
-          <p>{fl.home!.caption}</p>
+          <p set:html={it(fl.home!.caption)} />
           <div class="links">
             <a class="link-arrow" href={`/work/${fl.slug}`}>Explore {fl.title}</a>
             <a class="link-arrow" href={site.tryAgainPrototype} target="_blank" rel="noopener">Play the Prototype</a>
@@ -152,8 +153,8 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
           {visible(mvMedia) && <a href={`/work/${mv.slug}`} class="media-link other-media"><Media media={mvMedia} caption={false} /></a>}
           <div>
             <h3><a href={`/work/${mv.slug}`}>{mv.title}</a> <span class="other-year">{mv.year}</span></h3>
-            <p>{mv.home!.caption}</p>
-            <p class="credit">{mv.creditShort}</p>
+            <p set:html={it(mv.home!.caption)} />
+            <p class="credit" set:html={it(mv.creditShort)} />
           </div>
         </div>
         <hr class="rule" />
@@ -166,14 +167,14 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
     <div class="wrap about-grid">
       <h2 id="about-title">About</h2>
       <div class="about-body">
-        {home.bio.map((p) => <p class="lede">{p}</p>)}
+        {home.bio.map((p) => <p class="lede" set:html={it(p)} />)}
         {home.exhibitionsLine && <p>{home.exhibitionsLine}</p>}
         <h3 class="eyebrow recog-title">Recognition</h3>
         <ul class="recog">
           {home.recognition.map((r) => (
             <li>
               <span class="recog-award">{r.award}</span>
-              <span class="recog-note">{r.note}</span>
+              <span class="recog-note" set:html={it(r.note)} />
               <span class="recog-year">{r.year}</span>
             </li>
           ))}
