@@ -196,7 +196,7 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
   }
   .opening-grid {
     display: grid; grid-template-columns: repeat(12, 1fr);
-    column-gap: var(--gutter); align-items: center;
+    column-gap: var(--gutter); align-items: start; /* photo top = text top; the Try Again screen runs on below */
   }
   .opening-text { grid-column: 1 / 8; }
   .opening h1 { font-size: clamp(2.3rem, 4.6vw, 4.9rem); margin: 1rem 0 1.75rem; font-weight: 700; } /* bold runs wider */
