@@ -286,20 +286,22 @@ const themeStyle = (t?: { bg: string; fg: string; muted: string; line: string })
   .fl-text h2 { margin-bottom: 1.5rem; }
   /* Pictures share one bottom line; captions sit in a row below */
   .fl-media {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto;
-    column-gap: var(--img-gap); align-items: end;
+    /* one comic, a bit larger than a third; the video keeps a third of the width */
+    --third: calc((100% - 2 * var(--img-gap)) / 3);
+    display: grid; grid-template-columns: calc(var(--third) * 1.35) var(--third); grid-template-rows: auto auto;
+    justify-content: end; column-gap: var(--img-gap); align-items: end;
   }
   .fl-media :global(.media) { display: grid; grid-row: span 2; grid-template-rows: subgrid; align-items: end; }
   /* The two click-through stories fill two columns; their frames share the video's bottom line, dots sit in the caption row */
   .fl-stories, .fl-stories :global(.stories-wrap), .fl-stories :global(.story) {
     display: grid; grid-row: span 2; grid-template-rows: subgrid; align-items: end;
   }
-  .fl-stories { grid-column: span 2; }
+
   .fl-stories :global(.stories) { grid-row: span 2; grid-template-rows: subgrid; align-items: end; row-gap: 0; }
   .fl-stories :global(.story-progress) { align-self: start; }
   @media (max-width: 900px) {
     .fl-grid { grid-template-columns: 1fr; }
-    .fl-media { grid-template-columns: 1fr 1fr; row-gap: var(--img-gap); }
+    .fl-media { grid-template-columns: 1fr 1fr; justify-content: stretch; row-gap: var(--img-gap); }
     /* video takes one column, so it lines up under the first panel */
   }
 

@@ -535,7 +535,7 @@ export const projects: Project[] = [
       headline: 'Small failures. Playable stories.',
       caption:
         'An ongoing experiment in interactive storytelling, combining personal accounts of everyday imperfection with short illustrated narratives and accessible logic puzzles.',
-      stories: [ta.stories[0], ta.stories[4]], // Fail #1 and Fail #6
+      stories: [ta.stories[2]], // Fail #3: the cast-iron pan and the burnt food
       media: [ta.gameplay],
     },
     hero: ta.gameplay,
