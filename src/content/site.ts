@@ -622,6 +622,8 @@ export interface Sample {
   framing: string;
   role: string;
   clips: Media[];
+  /** Optional row of pictures shown with the clips (e.g. one mini-comic) */
+  comics?: { label: string; items: Media[] };
 }
 
 export const samples = {
@@ -652,6 +654,7 @@ export const samples = {
       framing: 'Personal stories of everyday failure, told through illustrations and small line puzzles.',
       role: 'Ongoing independent work · prototype',
       clips: [ta.gameplay],
+      comics: { label: 'Fail #1, a mini-comic', items: ta.stories[0].frames },
     },
   ] as Sample[],
 };

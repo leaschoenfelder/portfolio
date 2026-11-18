@@ -35,7 +35,7 @@ const isPortrait = (aspect: string) => {
   </header>
 
   {items.map((s) => (
-    <section id={`sample-${s.slug}`} class="wrap sample" aria-labelledby={`t-${s.slug}`}>
+    <section id={`sample-${s.slug}`} class:list={['wrap sample', s.comics && 'has-comics']} aria-labelledby={`t-${s.slug}`}>
       <div class="sample-info">
         <p class="meta"><span>{s.n}</span></p>
         <h2 id={`t-${s.slug}`}>{s.project.title} <span class="s-year">{s.project.year}</span></h2>
@@ -56,10 +56,19 @@ const isPortrait = (aspect: string) => {
               {s.clips.length > 1 && <span>{String.fromCharCode(97 + i)}.</span>}
               {c.caption?.replace(/\.$/, '')}
             </p>
-            <Media media={{ ...c, caption: undefined }} />
+            <Media media={{ ...c, caption: undefined, credit: s.comics ? undefined : c.credit }} />
           </div>
         ))}
       </div>
+      {s.comics && (
+        <div class="sample-comics">
+          <p class="clip-label">{s.comics.label}</p>
+          <div class="comics-row">
+            {s.comics.items.map((m) => <Media media={m} caption={false} />)}
+          </div>
+        </div>
+      )}
+      {s.comics && s.clips[0]?.credit && <p class="sample-credit">{s.clips[0].credit}</p>}
     </section>
   ))}
 </Base>
@@ -93,6 +102,20 @@ const isPortrait = (aspect: string) => {
   .optional .link-arrow { color: var(--fg); margin-top: 0.4rem; }
 
   .sample-clips { display: grid; gap: clamp(2rem, 4vw, 3rem); }
+
+  /* Text top left, comic row below it, tall video on the right; comic and video share a bottom line */
+  .sample.has-comics {
+    grid-template-columns: 1fr clamp(220px, 30%, 380px);
+    grid-template-areas: "info clips" "comics clips" "credit credit";
+    grid-template-rows: auto 1fr auto;
+  }
+  .has-comics .sample-info { grid-area: info; position: static; }
+  .has-comics .sample-clips { grid-area: clips; align-self: end; }
+  .has-comics .clip.portrait { max-width: none; }
+  .sample-comics { grid-area: comics; align-self: end; margin-top: 2.5rem; }
+  .comics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--img-gap); }
+  /* one credit line for the comic and the video, so both pictures end on the same line */
+  .sample-credit { grid-area: credit; margin-top: calc(-1.5 * var(--gutter) + 0.6rem); font-size: var(--fs-small); color: var(--muted); text-align: right; }
   .clip.portrait { max-width: 400px; }
   .clip-label { font-size: 0.875rem; margin-bottom: 0.6rem; display: flex; gap: 0.5em; align-items: baseline; }
   .clip-label > span:first-child { color: var(--muted); }
@@ -101,6 +124,9 @@ const isPortrait = (aspect: string) => {
     .sample { grid-template-columns: 1fr; }
     .sample-info { position: static; }
     .clip.portrait { max-width: 100%; }
+    .sample.has-comics { grid-template-columns: 1fr; grid-template-areas: "info" "comics" "clips" "credit"; grid-template-rows: auto; }
+    .sample-credit { text-align: left; }
+    .sample-comics { margin-top: 0; }
     .index a { grid-template-columns: 2rem 1fr auto; }
   }
 </style>
