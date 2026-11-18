@@ -387,14 +387,14 @@ export const projects: Project[] = [
     hero: pw.heroPhoto,
     heroLayout: 'wide',
     work: [
-      'Perfect Woman is a game played with the whole body. Players move through the stages of a woman’s life and, at each stage, choose who they want to become. Every choice is tied to a pose that has to be held in front of a Kinect camera.',
+      'Perfect Woman is a dancing game played with the whole body. Players move through the stages of a woman’s life and, at each stage, choose who they want to become. Every choice is tied to a performance to be danced and recognized by a Kinect camera. The more perfect your life, the more difficult the performance becomes.',
       'The game takes the expectations placed on women and turns them into a physical challenge. Trying to live a perfect life becomes something players feel in their own bodies: stretching, balancing and struggling to keep up.',
     ],
     interaction: {
       title: 'The pose as a choice',
       text: [
-        'The central decision was to make social pressure physical. Instead of pressing a button to choose a path, players commit to it with their posture. The more a choice promises, the harder the pose becomes to hold.',
-        'Watching someone play is part of the work. The audience sees the effort, the hesitation and the moment the body gives in.',
+        'The central concept is to make social pressure physical. Instead of pressing a button to choose a path, players commit to it with their posture. The more a choice promises, the harder the dance becomes.',
+        'Watching someone play is part of the work. The audience sees the effort, the hesitation, the joy or the moment the body gives in.',
       ],
       media: [pw.gameplay, pw.choice, pw.performance],
     },
