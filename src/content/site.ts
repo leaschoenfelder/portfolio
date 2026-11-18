@@ -93,7 +93,7 @@ const pw = {
     'Perfect Woman is played with the whole body.'),
   roles: img('perfect-woman/roles.jpg', 2000, 1125,
     'A colourful ensemble of exaggerated female life roles from the game.',
-    'Some of the lives players can choose.'),
+    '28 lifestyles – some are mutually exclusive.'),
   exhibition: img('perfect-woman/exhibition-digifest.jpg', 1200, 1800,
     'Live exhibition documentation showing embodied play in a public setting.',
     'Perfect Woman at Digifest, 2015.', 'Photo: Paula Lafleur'),
