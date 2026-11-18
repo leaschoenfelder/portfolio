@@ -275,7 +275,10 @@ export const home = {
 
   openingMedia: {
     perfectWoman: { ...pw.heroPhoto, caption: 'Perfect Woman, 2014', credit: undefined },
-    tryAgain: { ...ta.stories[4].frames[7], caption: 'Try Again, ongoing', credit: undefined },
+    // Gameplay screenshot supplied by Lea (Nov 2026): garden story with the line puzzle below
+    tryAgain: img('try-again/garden-puzzle.jpg', 997, 2000,
+      'Gameplay screen: a garden bed with three white-flowering stems at the top; below, a grid of dots on which a hand-drawn line is being traced.',
+      'Try Again, ongoing'),
   },
 
   inquiry: [
@@ -630,7 +633,7 @@ export const samples = {
       slug: 'perfect-woman',
       framing: 'Social expectations become a physical performance: players hold the poses their chosen life demands.',
       role: 'Concept, Art and Game Design · with Peter Lu (Programming and Game Design)',
-      clips: [pw.teaser, pw.gameplay],
+      clips: [pw.trailer, pw.gameplay],
     },
     {
       slug: 'assemble-with-care',
