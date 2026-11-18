@@ -90,7 +90,7 @@ const C = {
 const pw = {
   heroPhoto: img('perfect-woman/hero-photo.jpg', 2000, 1334,
     'Full-body documentation of a player using Kinect poses to control Perfect Woman.',
-    'Perfect Woman is played with the whole body.'),
+    'Perfect Woman is a dancing game.'),
   roles: img('perfect-woman/roles.jpg', 2000, 1125,
     'A colourful ensemble of exaggerated female life roles from the game.',
     '28 lifestyles – some are mutually exclusive.'),
