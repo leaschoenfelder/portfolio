@@ -594,7 +594,7 @@ export const projects: Project[] = [
     },
     stories: {
       title: 'Mini-comics',
-      hint: 'Mini-comics published on Instagram. They are not part of the playable prototype. Click a story to step through it, one picture at a time.',
+      hint: 'Mini-comics published on Instagram. Some of them are part of the playable prototype. Click a story to step through it, one picture at a time.',
       // Fail #2, #3 and #4 only
       items: ta.stories.slice(1, 4),
     },
