@@ -621,7 +621,7 @@ export const projects: Project[] = [
     role: 'Senior Game Designer',
     collaborators: 'ustwo games',
     creditShort: 'Senior Game Designer, ustwo games',
-    question: 'How can spatial interaction give form to a relationship?',
+    question: 'Spatial interaction giving form to a mother-daughter relationship',
     home: {
       headline: 'Monument Valley 2',
       caption: 'Exploring how spatial interaction can express the relationship between a mother and child.',
