@@ -574,6 +574,7 @@ export const projects: Project[] = [
     work: [
       'Try Again is an ongoing experiment in interactive storytelling. It combines short, personal accounts of everyday imperfection with illustrated stories and approachable logic puzzles.',
       'The project explores how vulnerability, humour and small interactive challenges can sit together, and how a brief, approachable interaction can carry a personal story without requiring any experience with games.',
+      'Try Again is designed for newspaper readers. It is analog to a crossword puzzle or daily comic strip and combines ironic yet heartfelt storytelling with a puzzle-solving routine you look forward to every day.',
     ],
     interaction: {
       title: 'Drawing a line through a story',
