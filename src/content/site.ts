@@ -587,7 +587,7 @@ export const projects: Project[] = [
       title: 'Drawing a line through a story',
       text: [
         'Each story is told through illustrated panels and continued through a small line puzzle. The player draws a line through a grid, and the drawing becomes part of the story: a planned week turns into an overcrowded calendar, a late garden fills with wildflowers.',
-        'The puzzles are not meant to test skill. They let players step briefly into the story, and sometimes fail at it themselves.',
+        'The puzzles are lighthearted with the appeal of a crossword puzzle or sudoku. They let players step briefly into the story, and look forward to a new try tomorrow.',
       ],
       media: [ta.weekPuzzle, ta.gardenLine],
     },
