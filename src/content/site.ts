@@ -103,7 +103,7 @@ const pw = {
     'A surreal underworld scene showing the game’s dark humour.'),
   performance: img('perfect-woman/screen-performance.jpg', 1440, 810,
     'The “Call Girl (60)” performance stage, with pose interface and a theatrical heart-and-star backdrop.',
-    'Each life is a pose to be held.'),
+    'Each life stage is a performance.'),
   choice: img('perfect-woman/screen-choice.jpg', 1440, 810,
     'The life-path choice screen at age 85, offering several identities with different difficulty levels.',
     'Choosing the next stage of life, at age 85.'),
