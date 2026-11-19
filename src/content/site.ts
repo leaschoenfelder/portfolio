@@ -599,13 +599,13 @@ export const projects: Project[] = [
       items: ta.stories.slice(1, 4),
     },
     contribution: [
-      'Try Again is Lea Schönfelder’s ongoing independent project. It is currently an experimental prototype, playable in the browser in English and German.',
+      'Try Again is Lea Schönfelder’s ongoing independent project. It is currently an experimental prototype, playable in the browser in English and German. The finished game is planned to have 365 fails, and the player plays one of them each day.',
     ],
     fullCredits: ['Try Again, 2026. © Lea Schönfelder'],
     process: [],
     context: [
       { label: 'Ongoing prototype', detail: 'Playable in the browser, English and German' },
-      { label: 'Seven illustrated stories so far' },
+      { label: 'Seven illustrated stories so far', detail: '365 fails planned, one for each day' },
     ],
     links: [{ label: 'Play the Prototype (WIP)', href: site.tryAgainPrototype, external: true }],
     next: 'monument-valley-2',
