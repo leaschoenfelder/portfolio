@@ -168,9 +168,9 @@ const fh = {
   club: img('finding-hannah/scene-club.jpg', 2200, 1017,
     'A crowded Berlin club scene rendered as a colourful search space.', undefined, C.fh),
   wartime: img('finding-hannah/scene-wartime.jpg', 2200, 1017,
-    'A wartime-era scene connecting the present-day story to an earlier generation.', undefined, C.fh),
+    'Three women relax on a rooftop while a warplane flies low over the town.', undefined, C.fh),
   books: img('finding-hannah/scene-books.jpg', 2200, 1018,
-    'A book-filled interior showing how environmental detail carries story and interaction.', undefined, C.fh),
+    'Two women in a 1970s bookshop full of shelves, posters and plants.', undefined, C.fh),
   eva: img('finding-hannah/concept-eva.png', 740, 1200, 'Character concept artwork for Eva.', 'Eva.', C.fh),
   hannah: img('finding-hannah/concept-hannah.png', 741, 1200, 'Character concept artwork for Hannah, the contemporary protagonist.', 'Hannah.', C.fh),
   sigrid: img('finding-hannah/concept-sigrid.png', 742, 1200, 'Character concept artwork for Sigrid, from an older generation of the family.', 'Sigrid.', C.fh),
@@ -325,7 +325,7 @@ export const home = {
    -------------------------------------------------------------------------- */
 export interface ContextItem { label: string; detail?: string; href?: string }
 export interface LinkItem { label: string; href: string; external?: boolean }
-export interface Gallery { title: string; items: Media[] }
+export interface Gallery { title: string; items: Media[]; /** one picture per row, as wide as the video */ stack?: boolean }
 export interface Story { title: string; frames: Media[] }
 
 export interface Project {
@@ -506,7 +506,17 @@ export const projects: Project[] = [
       media: [fh.intro, fh.bookshop],
     },
     galleries: [
-      { title: 'Scenes', items: [fh.trailer, fh.cafe, fh.club, fh.desk, fh.wartime, fh.books, fh.courtyard] },
+      {
+        title: 'Scenes',
+        stack: true,
+        items: [
+          fh.trailer,
+          { ...fh.wartime, caption: '1943 ladies on the rooftop during war' },
+          { ...fh.books, caption: '1972 hippie bookshop' },
+          { ...fh.club, caption: '2016 Berlin Club' },
+          { ...fh.desk, caption: '2016 desk scene' },
+        ],
+      },
     ],
     contribution: [
       'As co-founder and co-CEO of Fein Games, Lea Schönfelder was creative director of Finding Hannah and led its creative, production and business direction. The game was made by the Fein Games team; its art is by Elena Resko and Bien Tran.',
