@@ -643,7 +643,7 @@ export const samples = {
     {
       slug: 'assemble-with-care',
       framing: 'Tactile repair as a way of approaching memory, relationships and care.',
-      role: 'Lead Game Designer; led the design and development team · ustwo games',
+      role: 'Lead Game Designer; Concept phase through Prototyping, Production and DLC · ustwo games',
       clips: [awc.trailer, awc.camera],
     },
     {
