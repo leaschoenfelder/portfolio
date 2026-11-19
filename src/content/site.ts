@@ -349,6 +349,8 @@ export interface Project {
   heroLayout: 'wide' | 'portrait';
 
   work: string[];
+  /** Optional short paragraph(s) about what inspired the work */
+  inspiration?: string[];
   interaction: { title: string; text: string[]; media: Media[] };
   galleries?: Gallery[];
   /** Click-through picture stories, shown in one row */
@@ -445,6 +447,9 @@ export const projects: Project[] = [
     work: [
       'In Assemble with Care, players restore cherished objects that belong to the people of a small town. Each object carries a story.',
       'Opening it up, understanding how it works and putting it back together becomes a way of entering the lives and relationships of its owners. The game is calm and unhurried. It asks players to handle things carefully, and to notice that the people who own them need care too.',
+    ],
+    inspiration: [
+      'The inspiration was the delicate, almost meditative feeling of repairing something by hand. In Assemble with Care, this repair happens slowly and through touch, while listening to the life stories of the people the objects belong to. Mending their things together with them becomes a way of helping them restore broken relationships.',
     ],
     interaction: {
       title: 'Repair as metaphor',

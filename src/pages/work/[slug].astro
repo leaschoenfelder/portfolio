@@ -73,6 +73,15 @@ const description = `${p.title}, ${p.year} — ${p.question}`;
       </div>
     </section>
 
+    {p.inspiration && (
+      <section class="wrap block" aria-labelledby="insp-h">
+        <h2 id="insp-h" class="block-label eyebrow">Inspiration</h2>
+        <div class="block-body">
+          {p.inspiration.map((t) => <p set:html={it(t)} />)}
+        </div>
+      </section>
+    )}
+
     <!-- 5. The Interaction -->
     <section class="wrap block" aria-labelledby="int-h">
       <p class="block-label eyebrow">The Interaction</p>
