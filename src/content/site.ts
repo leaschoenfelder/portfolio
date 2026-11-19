@@ -588,6 +588,7 @@ export const projects: Project[] = [
       text: [
         'Each story is told through illustrated panels and continued through a small line puzzle. The player draws a line through a grid, and the drawing becomes part of the story: a planned week turns into an overcrowded calendar, a late garden fills with wildflowers.',
         'The puzzles are lighthearted with the appeal of a crossword puzzle or sudoku. They let players step briefly into the story, and look forward to a new try tomorrow.',
+        'The puzzle is to recognize shapes and mirror them by drawing a line on the grid. This clears the screen and lets the player progress to the next section.',
       ],
       media: [ta.weekPuzzle, ta.gardenLine],
     },
