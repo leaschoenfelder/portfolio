@@ -157,7 +157,8 @@ const fh = {
     'Close-up of Hannah against a neon-lit Berlin background, introducing herself to the player.',
     '“My name is Hannah. I live in Berlin.”', C.fh),
   courtyard: img('finding-hannah/scene-courtyard.jpg', 1800, 1349,
-    'An illustrated garden or courtyard scene populated with characters and searchable details.', undefined, C.fh),
+    'A garden scene: an older woman sits on a bench outside a small summer house while a younger woman with blue hair stands among the flower beds.',
+    'Every object in a scene can carry part of the story.', C.fh),
   bookshop: img('finding-hannah/scene-bookshop.jpg', 1800, 1350,
     'A richly detailed bookshop interior showing the game’s hidden-object storytelling.',
     'Every object in a scene can carry part of the story.', C.fh),
@@ -513,7 +514,7 @@ export const projects: Project[] = [
         'Hidden-object games are widely played but rarely taken seriously. Choosing this form was an artistic decision: a mechanic many people already know lowers the threshold, so attention can move to the characters and their lives.',
         'Searching a scene becomes a way of looking closely at someone’s world: their rooms, their belongings and the traces of their decisions.',
       ],
-      media: [fh.intro, fh.bookshop],
+      media: [fh.intro, fh.courtyard],
     },
     galleries: [
       {
