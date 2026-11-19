@@ -484,7 +484,7 @@ export const projects: Project[] = [
     role: 'Co-founder & Co-CEO, Creative Direction',
     collaborators: 'Fein Games',
     creditShort: 'Creative Direction, Fein Games',
-    question: 'How can familiar game conventions open up space for unfamiliar perspectives?',
+    question: 'Can familiar game conventions open up space for unfamiliar perspectives?',
     home: {
       headline: 'Making room for stories rarely told in games.',
       caption:
