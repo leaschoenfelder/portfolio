@@ -541,7 +541,9 @@ export const projects: Project[] = [
     process: [fh.cardEva, fh.cardHannah, fh.cardSigrid, fh.knitting, fh.prototype],
     context: [
       { label: 'Apple App Store Award, Cultural Impact', detail: '2023' },
-      { label: 'Apple Design Award finalist, Inclusion', detail: '2023' },
+      { label: 'Apple Design Award Finalist, Inclusion', detail: '2023' },
+      { label: 'Deutscher Computerspielpreis nomination, Best Graphic Design', detail: '2023' },
+      { label: 'A MAZE. Diversity Award nomination', detail: '2023' },
     ],
     links: [],
     next: 'try-again',
