@@ -433,7 +433,7 @@ export const projects: Project[] = [
     role: 'Lead Game Designer; led the design and development team',
     collaborators: 'ustwo games',
     creditShort: 'Lead Game Designer, ustwo games',
-    question: 'The act of repairing a thing acts as metaphor for healing relationships.',
+    question: 'The act of repairing nostalgic objects acts as metaphor for healing relationships.',
     home: {
       headline: 'Repairing objects. Repairing relationships.',
       caption:
