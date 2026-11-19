@@ -461,7 +461,7 @@ export const projects: Project[] = [
     },
     galleries: [{ title: 'Trailer', items: [awc.trailer] }],
     contribution: [
-      'As lead game designer, Lea Schönfelder led the design and development team of Assemble with Care. The game is a ustwo games production, made by the whole studio team.',
+      'As lead game designer, Lea Schönfelder conceived the concept and led the design and development team of Assemble with Care. The game is a ustwo games production and was an Apple Arcade launch title.',
     ],
     fullCredits: ['A ustwo games production', 'Lead Game Designer: Lea Schönfelder', '© ustwo games'],
     process: [awc.storyboard, awc.selma, awc.ada, awc.carl],
