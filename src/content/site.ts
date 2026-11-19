@@ -561,7 +561,7 @@ export const projects: Project[] = [
     role: 'Independent work',
     collaborators: 'Independent project',
     creditShort: 'Try Again, 2026. © Lea Schönfelder',
-    question: 'What happens when everyday failure becomes the starting point for a playful story?',
+    question: 'The hope is that failing every day makes you get used to it, removing the frustration and turning it into something that is normal and maybe even funny.',
     home: {
       headline: 'Small failures. Playable stories.',
       caption:
