@@ -430,7 +430,7 @@ export const projects: Project[] = [
     title: 'Assemble with Care',
     year: '2019',
     medium: 'Narrative puzzle game',
-    role: 'Lead Game Designer; led the design and development team',
+    role: 'Lead Game Designer; Concept phase through Prototyping, Production and DLC',
     collaborators: 'ustwo games',
     creditShort: 'Lead Game Designer, ustwo games',
     question: 'The act of repairing nostalgic objects acts as metaphor for healing relationships.',
