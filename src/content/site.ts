@@ -453,7 +453,7 @@ export const projects: Project[] = [
     title: 'Assemble with Care',
     year: '2019',
     medium: 'Narrative puzzle game',
-    role: 'Lead Game Designer; Concept phase through Prototyping, Production and DLC',
+    role: 'Lead Game Designer; Led team through Concept, Prototyping, Production and DLC',
     collaborators: 'ustwo games',
     creditShort: 'Lead Game Designer, ustwo games',
     question: 'The act of repairing nostalgic objects acts as metaphor for healing relationships.',
@@ -683,7 +683,7 @@ export const samples = {
     {
       slug: 'assemble-with-care',
       framing: 'Tactile repair as a way of approaching memory, relationships and care.',
-      role: 'Lead Game Designer; Concept phase through Prototyping, Production and DLC · ustwo games',
+      role: 'Lead Game Designer; Led team through Concept, Prototyping, Production and DLC · ustwo games',
       clips: [awc.trailer, awc.camera],
     },
     {
