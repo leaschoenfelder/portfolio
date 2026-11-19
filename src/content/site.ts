@@ -207,6 +207,13 @@ const ta = {
   calendar: img('try-again/calendar.jpg', 1400, 1400,
     'A fully coloured, overcrowded weekly calendar showing the actual outcome of a planned routine.',
     'A planned week, and what it actually became.', C.ta),
+  // Gameplay screens supplied by Lea (Nov 2026) for The Interaction
+  weekPuzzle: img('try-again/week-puzzle.jpg', 2000, 996,
+    'Landscape gameplay screen: a hand-drawn weekly plan with Yoga, Work and Espresso with Friends on the left; on the right, a grid of white dots on which a black line is being drawn.',
+    'A planned week becomes a line puzzle.', C.ta),
+  gardenLine: img('try-again/garden-line.jpg', 997, 2000,
+    'Portrait gameplay screen: a garden bed with three white-flowering stems at the top; below, a grid of dots on which a hand-drawn line is being traced.',
+    'A late garden, continued line by line.', C.ta),
   /** Illustrated stories, one square each; frames in reading order (source folders 1, 2, 3, 4, 6). */
   stories: [
     story(1, 'Fail #1', [
@@ -574,7 +581,7 @@ export const projects: Project[] = [
     work: [
       'Try Again is an ongoing experiment in interactive storytelling. It combines short, personal accounts of everyday imperfection with illustrated stories and approachable logic puzzles.',
       'The project explores how vulnerability, humour and small interactive challenges can sit together, and how a brief, approachable interaction can carry a personal story without requiring any experience with games.',
-      'Try Again is designed for newspaper readers. It is analog to a crossword puzzle or daily comic strip and combines ironic yet heartfelt storytelling with a puzzle-solving routine you look forward to every day.',
+      'Try Again is designed for newspaper readers. It is analogous to a crossword puzzle or daily comic strip and combines ironic yet heartfelt storytelling with a puzzle-solving routine you look forward to every day.',
     ],
     interaction: {
       title: 'Drawing a line through a story',
@@ -582,7 +589,7 @@ export const projects: Project[] = [
         'Each story is told through illustrated panels and continued through a small line puzzle. The player draws a line through a grid, and the drawing becomes part of the story: a planned week turns into an overcrowded calendar, a late garden fills with wildflowers.',
         'The puzzles are not meant to test skill. They let players step briefly into the story, and sometimes fail at it themselves.',
       ],
-      media: [ta.calendar, ta.garden],
+      media: [ta.weekPuzzle, ta.gardenLine],
     },
     stories: {
       title: 'Mini-comics',

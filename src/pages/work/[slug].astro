@@ -19,6 +19,8 @@ const isLandscape = (m: M) => {
 };
 const im = p.interaction.media.filter(visible);
 const leadWide = im.length % 2 === 1 && im.length > 1 && isLandscape(im[0]);
+// A landscape screen next to a tall portrait one: the portrait keeps its column, the landscape grows to the left
+const landPort = im.length === 2 && isLandscape(im[0]) && !isLandscape(im[1]);
 const process = p.process.filter(visible);
 const galleries = (p.galleries ?? []).map((g) => ({ ...g, items: g.items.filter(visible) })).filter((g) => g.items.length);
 const splitGallery = (items: M[]) => ({ videos: items.filter((m) => m.kind !== 'image'), images: items.filter((m) => m.kind === 'image') });
@@ -90,7 +92,7 @@ const description = `${p.title}, ${p.year} — ${p.question}`;
         {p.interaction.text.map((t) => <p set:html={it(t)} />)}
       </div>
       {im.length > 0 && (
-        <div class:list={['int-media', leadWide && 'lead-wide', `n-${im.length}`]}>
+        <div class:list={['int-media', leadWide && 'lead-wide', landPort && 'land-port', `n-${im.length}`]}>
           {im.map((m) => <Media media={m} />)}
         </div>
       )}
@@ -212,8 +214,13 @@ const description = `${p.title}, ${p.year} — ${p.question}`;
   .int-media.n-1 { grid-template-columns: 1fr; }
   .int-media.lead-wide > :global(:first-child) { grid-column: 1 / -1; }
   .layout-portrait .int-media { grid-template-columns: 4fr 3fr; max-width: 900px; margin-inline: auto; width: 100%; }
+  .layout-portrait .int-media.land-port {
+    max-width: none; margin-inline: 0;
+    grid-template-columns: 1fr min(calc((900px - var(--gutter)) * 3 / 7), 40%);
+    padding-right: max(0px, calc((100% - 900px) / 2));
+  }
   @media (max-width: 760px) {
-    .int-media, .layout-portrait .int-media { grid-template-columns: 1fr; }
+    .int-media, .layout-portrait .int-media, .layout-portrait .int-media.land-port { grid-template-columns: 1fr; }
   }
 
   .full-credits { list-style: none; padding: 0; font-size: 0.9375rem; color: var(--muted); }
